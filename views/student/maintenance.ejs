@@ -1,0 +1,71 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<section class="container my-5">
+  <h3 class="fw-bold mb-4">🧹 Maintenance & Cleaning Requests</h3>
+
+  <% if (flash && flash.message) { %>
+    <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %>">
+      <%= flash.message %>
+    </div>
+  <% } %>
+
+  <form action="/student/maintenance" method="POST" class="card p-4 shadow-sm mb-4">
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Issue</label>
+      <input
+        type="text"
+        name="issue"
+        class="form-control"
+        placeholder="e.g., Fan not working"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Description</label>
+      <textarea
+        name="description"
+        class="form-control"
+        rows="3"
+        placeholder="Describe the issue in detail"
+      ></textarea>
+    </div>
+    <button class="btn btn-primary px-4 rounded-pill">Submit Request</button>
+  </form>
+
+  <h5 class="fw-semibold mb-3">Your Requests</h5>
+  <table class="table table-bordered shadow-sm">
+    <thead class="table-light">
+      <tr>
+        <th>Issue</th>
+        <th>Room</th>
+        <th>Status</th>
+        <th>Requested On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (requests && requests.length > 0) { %>
+        <% requests.forEach(r => { %>
+          <tr>
+            <td><%= r.issue %></td>
+            <td><%= r.room %></td>
+            <td>
+              <span class="badge bg-<%= r.status === 'Resolved' ? 'success' : r.status === 'In Progress' ? 'warning' : 'secondary' %>">
+                <%= r.status %>
+              </span>
+            </td>
+            <td><%= new Date(r.createdAt).toDateString() %></td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="4" class="text-center text-muted py-3">
+            No maintenance requests yet.
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+
+<%- include('../partials/footer') %>

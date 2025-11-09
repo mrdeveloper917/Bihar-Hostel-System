@@ -31,7 +31,14 @@ import {
   getAdminLeaves,
   approveLeave,
   rejectLeave,
+
 } from "../controllers/adminController.js";
+
+import {
+  getAllMaintenance,
+  updateMaintenanceStatus,
+} from "../controllers/maintenanceController.js";
+
 
 import { protectAdmin } from "../middleware/authMiddleware.js";
 
@@ -80,5 +87,8 @@ router.post("/complaints/:id/resolve", protectAdmin, resolveComplaint);
 router.get("/leaves", protectAdmin, getAdminLeaves);
 router.post("/leaves/approve/:id", protectAdmin, approveLeave);
 router.post("/leaves/reject/:id", protectAdmin, rejectLeave);
+
+router.get("/maintenance", protectAdmin, getAllMaintenance);
+router.post("/maintenance/:id/status", protectAdmin, updateMaintenanceStatus);
 
 export default router;

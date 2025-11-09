@@ -12,8 +12,8 @@
       </p>
     </div>
     <div class="date-pill mt-3 mt-md-0 shadow-sm">
-      <i class="bi bi-calendar3 me-2"></i> Today: <%= new
-      Date().toLocaleDateString() %>
+      <i class="bi bi-calendar3 me-2"></i>
+      Today: <%= new Date().toLocaleDateString() %>
     </div>
   </div>
 
@@ -51,10 +51,10 @@
 
     <div class="col-md-6 col-xl-3">
       <div class="stat-card stat-info">
-        <div class="icon-wrap"><i class="bi bi-calendar-check"></i></div>
+        <div class="icon-wrap"><i class="bi bi-tools"></i></div>
         <div class="details">
-          <h6>Total Bookings</h6>
-          <h3><%= totalBookings %></h3>
+          <h6>Pending Maintenance</h6>
+          <h3><%= pendingMaintenance %></h3>
         </div>
       </div>
     </div>
@@ -249,48 +249,49 @@
       </div>
     </div>
 
-    <!-- Leaves -->
+    <!-- 🧹 MAINTENANCE REQUESTS -->
     <div class="col-xl-6">
       <div class="glass-card h-100 border-0 shadow-glass">
         <div
-          class="card-header gradient-warning text-white d-flex justify-content-between align-items-center rounded-top-4"
+          class="card-header gradient-info text-white d-flex justify-content-between align-items-center rounded-top-4"
         >
-          <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Leaves</h5>
+          <h5 class="mb-0">
+            <i class="bi bi-tools me-2"></i>Maintenance Requests
+          </h5>
           <a
-            href="/admin/leaves"
+            href="/admin/maintenance"
             class="btn btn-light btn-sm rounded-pill shadow-hover"
           >
-            <i class="bi bi-eye me-1"></i> View
+            <i class="bi bi-gear me-1"></i> Manage
           </a>
         </div>
-        <div class="card-body text-center py-5">
-          <div class="display-6 fw-bold text-warning">
-            <%= pendingLeaves || 0 %>
+        <div class="card-body">
+          <% if (recentMaintenance && recentMaintenance.length > 0) { %>
+          <ul class="list-group list-group-flush">
+            <% recentMaintenance.slice(0, 5).forEach(m => { %>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center hover-line py-3"
+            >
+              <div>
+                <i
+                  class="bi bi-wrench-adjustable-circle text-info me-2 fs-5"
+                ></i>
+                <%= m.issue %> — <small class="text-muted"><%= m.room %></small>
+              </div>
+              <span
+                class="badge <%= m.status === 'Resolved' ? 'bg-success' : m.status === 'In Progress' ? 'bg-warning text-dark' : 'bg-secondary' %> rounded-pill px-3 py-2"
+              >
+                <%= m.status %>
+              </span>
+            </li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <div class="empty text-center py-4">
+            <i class="bi bi-wrench fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No maintenance requests found</p>
           </div>
-          <p class="text-muted">Pending Leave Requests</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Notices -->
-    <div class="col-xl-6">
-      <div class="glass-card h-100 border-0 shadow-glass">
-        <div
-          class="card-header gradient-primary text-white d-flex justify-content-between align-items-center rounded-top-4"
-        >
-          <h5 class="mb-0"><i class="bi bi-megaphone me-2"></i>Notices</h5>
-          <a
-            href="/admin/notices"
-            class="btn btn-light btn-sm rounded-pill shadow-hover"
-          >
-            <i class="bi bi-eye me-1"></i> View
-          </a>
-        </div>
-        <div class="card-body text-center py-5">
-          <div class="display-6 fw-bold text-primary">
-            <%= totalNotices || 0 %>
-          </div>
-          <p class="text-muted">Total Announcements</p>
+          <% } %>
         </div>
       </div>
     </div>

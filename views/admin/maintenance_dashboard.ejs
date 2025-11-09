@@ -1,0 +1,54 @@
+<% title =" Maintenance" %>
+
+<section class="container my-5">
+  <h3 class="fw-bold mb-4">🧰 Maintenance Management</h3>
+
+  <% if (flash && flash.message) { %>
+    <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %>">
+      <%= flash.message %>
+    </div>
+  <% } %>
+
+  <table class="table table-hover shadow-sm align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Student</th>
+        <th>Room</th>
+        <th>Issue</th>
+        <th>Status</th>
+        <th>Requested On</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (requests && requests.length > 0) { %>
+        <% requests.forEach(r => { %>
+          <tr>
+            <td><%= r.student ? r.student.user.name : "Unknown" %></td>
+            <td><%= r.room %></td>
+            <td><%= r.issue %></td>
+            <td>
+              <span class="badge bg-<%= r.status === 'Resolved' ? 'success' : r.status === 'In Progress' ? 'warning' : 'secondary' %>">
+                <%= r.status %>
+              </span>
+            </td>
+            <td><%= new Date(r.createdAt).toLocaleDateString() %></td>
+            <td>
+              <form action="/admin/maintenance/<%= r._id %>/status" method="POST" class="d-flex">
+                <select name="status" class="form-select form-select-sm me-2">
+                  <option <%= r.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                  <option <%= r.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                  <option <%= r.status === 'Resolved' ? 'selected' : '' %>>Resolved</option>
+                </select>
+                <button class="btn btn-success btn-sm">Update</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="6" class="text-center text-muted py-3">No maintenance requests yet.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+

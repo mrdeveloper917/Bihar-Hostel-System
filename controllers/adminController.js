@@ -6,6 +6,7 @@ import Booking from "../models/booking.js";
 import Leave from "../models/leave.js";
 import Notice from "../models/noticeModel.js";
 import { createObjectCsvStringifier } from "csv-writer";
+import Maintenance from "../models/maintenance.js"; //
 
 /* ===============================
    📊 ADMIN DASHBOARD
@@ -34,6 +35,7 @@ export const getAdminDashboard = async (req, res) => {
     const pendingLeaves = await Leave.countDocuments({ status: "pending" });
     const totalNotices = await Notice.countDocuments();
 
+    // ✅ Existing data
     const recentBookings = await Booking.find()
       .sort({ createdAt: -1 })
       .limit(5)
@@ -52,6 +54,17 @@ export const getAdminDashboard = async (req, res) => {
       .limit(10)
       .lean();
 
+    // ✅ MOVE MAINTENANCE ADDITIONS HERE (AFTER OTHER QUERIES)
+    const totalMaintenance = await Maintenance.countDocuments();
+    const pendingMaintenance = await Maintenance.countDocuments({
+      status: { $ne: "Resolved" },
+    });
+    const recentMaintenance = await Maintenance.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+    // ✅ END FIX
+
     res.render("dashboard/admin_dashboard", {
       title: "Admin Dashboard",
       user: req.session.user,
@@ -69,6 +82,11 @@ export const getAdminDashboard = async (req, res) => {
       students,
       pendingLeaves,
       totalNotices,
+
+      // ✅ ADDED VALUES
+      totalMaintenance,
+      pendingMaintenance,
+      recentMaintenance,
     });
   } catch (err) {
     console.error("❌ Error loading admin dashboard:", err);
@@ -77,6 +95,9 @@ export const getAdminDashboard = async (req, res) => {
       .render("pages/error500", { title: "Server Error", error: err });
   }
 };
+
+
+
 
 /* ===============================
    👨‍🎓 STUDENT MANAGEMENT

@@ -16,6 +16,12 @@ import {
   updateProfilePicture,
 } from "../controllers/studentController.js";
 
+import {
+  getMaintenanceRequests,
+  postMaintenanceRequest,
+} from "../controllers/maintenanceController.js";
+
+
 import { protectStudent } from "../middleware/authMiddleware.js";
 import { upload } from "../config/multerConfig.js";
 
@@ -58,6 +64,10 @@ router.post("/create-order", protectStudent, createOrder);
 
 // Verify payment after success
 router.post("/verify-payment", protectStudent, verifyPayment);
+
+// Maintenance & Cleaning Requests
+router.get("/maintenance", protectStudent, getMaintenanceRequests);
+router.post("/maintenance", protectStudent, postMaintenanceRequest);
 
 /* ===========================================================
    👤 PROFILE

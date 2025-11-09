@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import Student from "../models/student.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 
 // =============================
