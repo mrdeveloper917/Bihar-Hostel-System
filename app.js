@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import expressLayouts from "express-ejs-layouts";
 import { fileURLToPath } from "url";
 
+
 // 🧭 Routes
 import mainRoutes from "./routes/mainRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
