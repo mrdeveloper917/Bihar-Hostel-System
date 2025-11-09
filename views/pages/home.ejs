@@ -1,0 +1,394 @@
+<% title = "Home" %>
+
+<!-- HERO SECTION -->
+<section
+  class="hero-section position-relative d-flex align-items-center text-white overflow-hidden"
+>
+  <div class="hero-overlay"></div>
+  <canvas id="heroParticles"></canvas>
+
+  <div class="container position-relative z-2 py-5">
+    <div class="row align-items-center justify-content-between">
+      <!-- LEFT CONTENT -->
+      <div class="col-lg-6 col-md-7 animate__animated animate__fadeInLeft">
+        <h1 class="fw-bold display-4 mb-3 animated-gradient-text">
+          Transforming Hostel Life in Bihar
+        </h1>
+        <p class="lead text-light mb-4 opacity-90">
+          Experience a next-generation Hostel Management System designed for
+          simplicity, transparency, and speed — empowering both students and
+          administrators.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3">
+          <a
+            href="/register"
+            class="btn btn-light btn-lg rounded-pill px-5 shadow-lg hero-btn"
+          >
+            <i class="bi bi-person-plus me-2"></i> Get Started
+          </a>
+          <a
+            href="/about"
+            class="btn btn-outline-light btn-lg rounded-pill px-5 hero-btn-alt"
+          >
+            <i class="bi bi-info-circle me-2"></i> Learn More
+          </a>
+          <a
+            href="/contact"
+            class="btn btn-gradient btn-lg rounded-pill px-5 text-white"
+          >
+            <i class="bi bi-envelope-paper me-2"></i> Contact Us
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT IMAGE -->
+      <div
+        class="col-lg-5 col-md-5 text-center mt-5 mt-md-0 animate__animated animate__fadeInRight"
+      >
+        <img
+          src="/img/hostel-hero.png"
+          alt="Hostel Management"
+          class="img-fluid hero-img"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="features-section py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold text-gradient mb-3">Our Core Features</h2>
+    <p class="text-muted mb-5">
+      Simplify every part of hostel management with a unified system.
+    </p>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
+          <div class="icon-circle bg-gradient-primary mb-3">
+            <i class="bi bi-house-door fs-2 text-white"></i>
+          </div>
+          <h5 class="fw-semibold mb-2">Room Allotment</h5>
+          <p class="text-muted small">
+            Smart, fair, and automated room assignments for every student.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
+          <div class="icon-circle bg-gradient-warning mb-3">
+            <i class="bi bi-chat-left-text fs-2 text-white"></i>
+          </div>
+          <h5 class="fw-semibold mb-2">Complaint Tracking</h5>
+          <p class="text-muted small">
+            Raise and monitor hostel complaints in real-time, stress-free.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
+          <div class="icon-circle bg-gradient-success mb-3">
+            <i class="bi bi-cash-stack fs-2 text-white"></i>
+          </div>
+          <h5 class="fw-semibold mb-2">Fee Management</h5>
+          <p class="text-muted small">
+            Seamless online payments and transparent invoice management.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="testimonials-section py-5 text-center">
+  <div class="container">
+    <h2 class="fw-bold text-gradient mb-4">What Our Students Say</h2>
+
+    <div
+      id="testimonialCarousel"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="testimonial-card p-4 mx-auto">
+            <p class="text-muted fst-italic mb-3">
+              “This platform completely simplified our hostel management — from
+              fees to complaints, everything’s online!”
+            </p>
+            <img
+              src="/img/avatar.png"
+              alt="Anjali"
+              class="rounded-circle mb-3"
+              width="60"
+              height="60"
+            />
+            <h6 class="fw-semibold mb-0">Anjali Kumari</h6>
+            <small class="text-muted">Polytechnic Student</small>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="testimonial-card p-4 mx-auto">
+            <p class="text-muted fst-italic mb-3">
+              “A great initiative! User-friendly interface and smooth fee
+              management system.”
+            </p>
+            <img
+              src="/img/avatar.png"
+              alt="Ravi"
+              class="rounded-circle mb-3"
+              width="60"
+              height="60"
+            />
+            <h6 class="fw-semibold mb-0">Ravi Kumar</h6>
+            <small class="text-muted">Hostel Resident</small>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#testimonialCarousel"
+        data-bs-slide="prev"
+      >
+        <span
+          class="carousel-control-prev-icon bg-dark rounded-circle p-3"
+        ></span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#testimonialCarousel"
+        data-bs-slide="next"
+      >
+        <span
+          class="carousel-control-next-icon bg-dark rounded-circle p-3"
+        ></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="cta-section text-white text-center py-5">
+  <div class="container">
+    <h2 class="fw-bold mb-3">Join the Digital Hostel Revolution</h2>
+    <p class="lead mb-4 opacity-90">
+      Manage your entire hostel life in one dashboard — simple, secure, and
+      transparent.
+    </p>
+    <a
+      href="/register"
+      class="btn btn-light btn-lg rounded-pill px-5 fw-semibold shadow pulse-btn"
+    >
+      <i class="bi bi-rocket-takeoff me-2"></i> Get Started Now
+    </a>
+  </div>
+</section>
+
+<!-- PARTICLES ANIMATION -->
+<script>
+  const canvas = document.getElementById("heroParticles");
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speedX = (Math.random() - 0.5) * 0.4;
+      this.speedY = (Math.random() - 0.5) * 0.4;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.fill();
+    }
+  }
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < 100; i++) particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p) => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    init();
+  });
+
+  init();
+  animate();
+</script>
+
+<!-- STYLES -->
+<style>
+  /* ===== HERO SECTION ===== */
+  .hero-section {
+    background: linear-gradient(115deg, #4e00c2, #007bff, #00c6ff);
+    background-size: 400% 400%;
+    animation: gradientFlow 12s ease infinite;
+    min-height: 90vh;
+  }
+
+  @keyframes gradientFlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.15),
+      rgba(0, 0, 0, 0.55)
+    );
+    backdrop-filter: blur(12px);
+  }
+
+  #heroParticles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .animated-gradient-text {
+    background: linear-gradient(90deg, #ffffff, #a1dfff, #d0a1ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textSlide 6s linear infinite;
+  }
+
+  @keyframes textSlide {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  .hero-img {
+    max-height: 420px;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
+    transition: transform 0.6s ease;
+  }
+  .hero-img:hover {
+    transform: scale(1.05);
+  }
+
+  /* ===== BUTTONS ===== */
+  .hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-btn-alt:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    transition: all 0.3s ease;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #007bff, #004dcc);
+  }
+
+  /* ===== FEATURES ===== */
+  .feature-card {
+    border-radius: 18px;
+    background: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .border-gradient {
+    border-top: 4px solid transparent;
+    border-image: linear-gradient(90deg, #007bff, #6610f2) 1;
+  }
+
+  /* ===== TESTIMONIALS ===== */
+  .testimonial-card {
+    max-width: 600px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(0, 123, 255, 0.2);
+  }
+
+  /* ===== CTA SECTION ===== */
+  .cta-section {
+    background: linear-gradient(135deg, #007bff, #6610f2, #00c6ff);
+    background-size: 200% 200%;
+    animation: gradientFlow 10s ease infinite;
+  }
+
+  .pulse-btn {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      text-align: center;
+    }
+    .hero-img {
+      margin-top: 2rem;
+      max-height: 300px;
+    }
+    .btn-lg {
+      width: 100%;
+    }
+  }
+</style>

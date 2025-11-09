@@ -1,0 +1,46 @@
+<% title = "Fee Payment" %>
+<section class="container my-5">
+  <h2 class="text-center text-primary mb-4">💳 Hostel Fee Payment</h2>
+
+  <div class="card shadow-lg p-4">
+    <h5>Amount Due: ₹5000</h5>
+    <button id="payBtn" class="btn btn-success mt-3">Pay with Razorpay</button>
+  </div>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    document.getElementById("payBtn").onclick = async () => {
+      const res = await fetch("/payment/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 5000 }),
+      });
+      const data = await res.json();
+
+      const options = {
+        key: data.key,
+        amount: 5000 * 100,
+        currency: "INR",
+        name: "Bihar Polytechnic Hostel",
+        description: "Hostel Fee Payment",
+        order_id: data.orderId,
+        handler: async function (response) {
+          await fetch("/payment/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderId: data.orderId,
+              paymentId: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            }),
+          });
+          alert("Payment Successful!");
+          window.location.reload();
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    };
+  </script>
+</section>

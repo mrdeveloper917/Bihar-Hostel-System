@@ -1,0 +1,276 @@
+<nav class="navbar navbar-expand-lg fixed-top glass-navbar py-2">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <img
+        src="/img/logo.png"
+        alt="logo"
+        width="42"
+        height="42"
+        class="me-2 rounded-circle border border-2 border-light-subtle shadow-sm"
+      />
+      <span class="fw-bold fs-5 logo-text">Bihar Hostel System</span>
+    </a>
+
+    <!-- Mobile Toggler -->
+    <button
+      class="navbar-toggler border-0 text-white"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+    >
+      <i class="bi bi-list fs-2"></i>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item">
+          <a class="nav-link cool-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link cool-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link cool-link" href="/contact">Contact</a>
+        </li>
+
+        <% if (!user) { %>
+        <li class="nav-item ms-lg-3">
+          <a
+            class="btn btn-light btn-sm px-3 fw-semibold shadow-sm hover-raise"
+            href="/login"
+          >
+            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+          </a>
+        </li>
+        <% } else { %>
+        <li class="nav-item dropdown ms-lg-3">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
+            <img
+              src="<%= user.profilePic || '/img/avatar.png' %>"
+              alt="avatar"
+              width="32"
+              height="32"
+              class="rounded-circle border border-1 me-2 shadow-sm"
+            />
+            <span class="fw-semibold"><%= user.name || user.email %></span>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 animate__animated animate__fadeInDown"
+          >
+            <li>
+              <a class="dropdown-item" href="/profile"
+                ><i class="bi bi-person me-2"></i> Profile</a
+              >
+            </li>
+            <% if (user.role === 'admin') { %>
+            <li>
+              <a class="dropdown-item" href="/admin"
+                ><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a
+              >
+            </li>
+            <% } else { %>
+            <li>
+              <a class="dropdown-item" href="/student"
+                ><i class="bi bi-grid me-2"></i> Student Dashboard</a
+              >
+            </li>
+            <% } %>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <form action="/logout" method="POST" class="m-0">
+                <button class="dropdown-item text-danger" type="submit">
+                  <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        <% } %>
+
+        <!-- Theme Toggle -->
+        <li class="nav-item d-flex align-items-center ms-lg-4 mt-3 mt-lg-0">
+          <button
+            id="theme-toggle"
+            class="btn btn-sm btn-outline-light rounded-pill px-3"
+          >
+            <i class="bi bi-moon-stars me-1"></i>
+            <span id="theme-label">Dark</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Theme & Scroll Scripts -->
+<script>
+  const toggleBtn = document.getElementById("theme-toggle");
+  const themeLabel = document.getElementById("theme-label");
+  const body = document.body;
+  const navbar = document.querySelector(".glass-navbar");
+
+  // Load saved theme
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-mode");
+    toggleBtn.innerHTML = '<i class="bi bi-sun me-1"></i> Light';
+  }
+
+  // Toggle dark/light mode
+  toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const isDark = body.classList.contains("dark-mode");
+    toggleBtn.innerHTML = isDark
+      ? '<i class="bi bi-sun me-1"></i> Light'
+      : '<i class="bi bi-moon-stars me-1"></i> Dark';
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
+
+  // Navbar shadow + shrink on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 20) navbar.classList.add("scrolled");
+    else navbar.classList.remove("scrolled");
+  });
+</script>
+
+<!-- STYLES -->
+<style>
+  /* ===== NAVBAR BASE ===== */
+  .glass-navbar {
+    background: linear-gradient(
+      110deg,
+      rgba(0, 123, 255, 0.9),
+      rgba(102, 16, 242, 0.9),
+      rgba(0, 204, 255, 0.8)
+    );
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    z-index: 1000;
+  }
+
+  .glass-navbar.scrolled {
+    background: linear-gradient(
+      120deg,
+      rgba(25, 25, 35, 0.95),
+      rgba(0, 123, 255, 0.85)
+    );
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+    padding: 0.35rem 0 !important;
+  }
+
+  .navbar-brand .logo-text {
+    background: linear-gradient(90deg, #ffffff, #a1e8ff, #d7a4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ===== NAV LINKS ===== */
+  .nav-link {
+    color: #f8f9fa !important;
+    font-weight: 500;
+    padding: 0.6rem 0.9rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link.cool-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 3px;
+    left: 0;
+    background: #fff;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link.cool-link:hover::after,
+  .nav-link.active::after {
+    width: 100%;
+    background: #fff;
+  }
+
+  .nav-link:hover {
+    color: #fff !important;
+    transform: translateY(-1px);
+  }
+
+  /* ===== DROPDOWN MENU ===== */
+  .dropdown-menu {
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .dropdown-item {
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: rgba(0, 123, 255, 0.12);
+  }
+
+  /* ===== BUTTON EFFECTS ===== */
+  .hover-raise {
+    transition: all 0.3s ease;
+  }
+  .hover-raise:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.4);
+  }
+
+  /* ===== THEME MODES ===== */
+  .dark-mode .glass-navbar {
+    background: linear-gradient(
+      100deg,
+      rgba(20, 20, 25, 0.95),
+      rgba(55, 55, 70, 0.9)
+    );
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .dark-mode .nav-link {
+    color: #ddd !important;
+  }
+
+  .dark-mode .nav-link.cool-link::after {
+    background: #00bfff;
+  }
+
+  .dark-mode .dropdown-menu {
+    background: rgba(30, 32, 36, 0.98);
+    color: #eee;
+  }
+
+  .dark-mode .dropdown-item:hover {
+    background-color: rgba(0, 191, 255, 0.15);
+  }
+
+  .dark-mode #theme-toggle {
+    border-color: #888;
+    color: #ccc;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .navbar-brand span {
+      font-size: 1rem;
+    }
+    .btn-sm {
+      font-size: 0.85rem;
+    }
+    .nav-link {
+      padding: 0.6rem;
+    }
+  }
+</style>

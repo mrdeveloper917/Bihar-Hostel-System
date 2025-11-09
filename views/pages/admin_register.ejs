@@ -1,0 +1,80 @@
+<% title = "Admin Registration" %>
+
+<section class="container py-5 mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-primary text-white text-center py-4">
+          <h3 class="fw-bold mb-1"><i class="bi bi-person-gear me-2"></i> Admin Registration</h3>
+          <p class="text-light mb-0 small">Create a new admin account</p>
+        </div>
+
+        <div class="card-body p-4">
+          <form method="POST" action="/admin-register">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Full Name</label>
+              <input type="text" name="name" class="form-control rounded-3 shadow-sm" required />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email</label>
+              <input type="email" name="email" class="form-control rounded-3 shadow-sm" required />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Password</label>
+              <input type="password" name="password" class="form-control rounded-3 shadow-sm" required />
+            </div>
+
+            <div class="text-end">
+              <button class="btn btn-gradient px-4 py-2 rounded-pill fw-semibold">
+                <i class="bi bi-person-plus me-1"></i> Register
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card-footer text-center bg-light py-3">
+          <small>Already have an account? <a href="/login" class="text-primary fw-semibold">Login</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SweetAlert Flash Message -->
+<% if (flash && flash.message) { %>
+<script>
+  Swal.fire({
+    icon: "<%= flash.type === 'success' ? 'success' : 'error' %>",
+    title: "<%= flash.type === 'success' ? 'Success!' : 'Oops...' %>",
+    text: "<%= flash.message %>",
+    showConfirmButton: false,
+    timer: 2000
+  });
+</script>
+<% } %>
+
+<!-- Styles -->
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, #00bfff, #007bff);
+    border: none;
+    color: #fff;
+    transition: 0.3s ease;
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  }
+</style>

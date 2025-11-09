@@ -1,0 +1,222 @@
+<% title = "Register" %>
+
+<section
+  class="auth-page d-flex align-items-center justify-content-center py-5"
+>
+  <div class="col-md-7 col-lg-6">
+    <div class="card glass-card border-0 rounded-4 shadow-lg">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <h3 class="fw-bold text-gradient">Create an Account</h3>
+          <p class="text-muted small">
+            Fill in your details to register for Hostel Management
+          </p>
+        </div>
+
+        <% if (flash && flash.message) { %>
+        <div
+          class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> text-center"
+        >
+          <%= flash.message %>
+        </div>
+        <% } %>
+
+        <form id="registerForm" action="/register" method="POST" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control form-control-lg"
+                placeholder="Enter your full name"
+                required
+              />
+              <div class="invalid-feedback">Please enter your name</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control form-control-lg"
+                placeholder="e.g. ayush@biharpolytechnic.ac.in"
+                required
+              />
+              <div class="invalid-feedback">
+                Please enter a valid email address
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control form-control-lg"
+                minlength="6"
+                required
+              />
+              <div class="invalid-feedback">
+                Password must be at least 6 characters
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Confirm Password</label>
+              <input
+                type="password"
+                name="password2"
+                id="password2"
+                class="form-control form-control-lg"
+                required
+              />
+              <div class="invalid-feedback" id="confirmError">
+                Passwords do not match
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold"
+                >Mobile Number (optional)</label
+              >
+              <input
+                type="tel"
+                name="phone"
+                class="form-control form-control-lg"
+                placeholder="Enter your phone number"
+              />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Gender</label>
+              <select class="form-select form-select-lg" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male 👦</option>
+                <option value="female">Female 👧</option>
+              </select>
+              <div class="invalid-feedback">Please select your gender</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Batch Year</label>
+              <input
+                type="number"
+                name="batchYear"
+                class="form-control form-control-lg"
+                placeholder="e.g. 2024"
+                min="2000"
+                max="2100"
+                required
+              />
+              <div class="invalid-feedback">Enter a valid batch year</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Register As</label>
+              <select class="form-select form-select-lg" name="role" required>
+                <option value="">Select Role</option>
+                <option value="student">Student 👨‍🎓</option>
+                <option value="admin">Admin 🧭</option>
+              </select>
+              <div class="invalid-feedback">Please choose a role</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button
+              type="submit"
+              class="btn btn-gradient btn-lg px-5 rounded-pill shadow-sm"
+            >
+              <i class="bi bi-person-plus"></i> Register
+            </button>
+          </div>
+        </form>
+
+        <p class="text-center mt-3 mb-0 small">
+          Already have an account?
+          <a href="/login" class="text-primary fw-semibold">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STYLES ================= -->
+<style>
+  body {
+    background: linear-gradient(135deg, #e8f0ff, #f9fbff);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .auth-page {
+    min-height: 85vh;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .form-control,
+  .form-select {
+    border-radius: 10px;
+    padding: 10px 15px;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  }
+
+  .btn-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(90deg, #0056b3, #4800a8);
+    transform: translateY(-2px);
+  }
+
+  .invalid-feedback {
+    font-size: 0.85rem;
+  }
+</style>
+
+<!-- ================= JS VALIDATION ================= -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("registerForm");
+    const pass = document.getElementById("password");
+    const pass2 = document.getElementById("password2");
+
+    form.addEventListener("submit", function (e) {
+      if (pass.value !== pass2.value) {
+        e.preventDefault();
+        pass2.classList.add("is-invalid");
+        document.getElementById("confirmError").style.display = "block";
+      } else {
+        pass2.classList.remove("is-invalid");
+      }
+    });
+  });
+</script>

@@ -1,0 +1,372 @@
+<% title = "Admin Dashboard" %>
+
+<section class="admin-dashboard container-fluid py-5 px-md-4">
+  <!-- ===== HEADER ===== -->
+  <div
+    class="dashboard-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5 rounded-4 shadow-glass p-4"
+  >
+    <div>
+      <h2 class="fw-bold gradient-text mb-1">🧭 Admin Dashboard</h2>
+      <p class="text-secondary fs-6 mb-0">
+        Welcome back, <strong><%= user.name || user.email %></strong> 👋
+      </p>
+    </div>
+    <div class="date-pill mt-3 mt-md-0 shadow-sm">
+      <i class="bi bi-calendar3 me-2"></i> Today: <%= new
+      Date().toLocaleDateString() %>
+    </div>
+  </div>
+
+  <!-- ===== STATS OVERVIEW ===== -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card stat-primary">
+        <div class="icon-wrap"><i class="bi bi-people-fill"></i></div>
+        <div class="details">
+          <h6>Total Students</h6>
+          <h3><%= totalStudents %></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card stat-success">
+        <div class="icon-wrap"><i class="bi bi-house-door"></i></div>
+        <div class="details">
+          <h6>Vacant Rooms</h6>
+          <h3><%= vacantRooms %></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card stat-warning">
+        <div class="icon-wrap"><i class="bi bi-exclamation-triangle"></i></div>
+        <div class="details">
+          <h6>Pending Complaints</h6>
+          <h3><%= pendingComplaints %></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card stat-info">
+        <div class="icon-wrap"><i class="bi bi-calendar-check"></i></div>
+        <div class="details">
+          <h6>Total Bookings</h6>
+          <h3><%= totalBookings %></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MANAGEMENT PANELS ===== -->
+  <div class="row g-4">
+    <!-- Students -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-primary text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0">
+            <i class="bi bi-person-lines-fill me-2"></i>Students
+          </h5>
+          <a
+            href="/admin/students"
+            class="btn btn-light btn-sm rounded-pill shadow-hover"
+          >
+            <i class="bi bi-gear me-1"></i> Manage
+          </a>
+        </div>
+        <div class="card-body">
+          <% if (students && students.length > 0) { %>
+          <ul class="list-group list-group-flush">
+            <% students.slice(0, 5).forEach(s => { %>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center hover-line py-3"
+            >
+              <div>
+                <i class="bi bi-person-circle text-primary me-2 fs-5"></i>
+                <strong><%= s.user?.name || "N/A" %></strong><br />
+                <small class="text-muted"><%= s.user?.email || "N/A" %></small>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <form
+                  action="/admin/students/auto-allot/<%= s._id %>"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-outline-primary rounded-pill"
+                  >
+                    <i class="bi bi-magic"></i> Auto Allot
+                  </button>
+                </form>
+                <span
+                  class="badge <%= s.feeStatus === 'Paid' ? 'bg-success' : 'bg-danger' %> rounded-pill px-3 py-2"
+                >
+                  <%= s.feeStatus || 'Unpaid' %>
+                </span>
+              </div>
+            </li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <div class="empty text-center py-4">
+            <i class="bi bi-person-x fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No students found</p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rooms -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-success text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0"><i class="bi bi-house-door me-2"></i>Rooms</h5>
+          <div class="d-flex gap-2">
+            <a
+              href="/admin/rooms"
+              class="btn btn-light btn-sm rounded-pill shadow-hover"
+            >
+              <i class="bi bi-gear"></i> Manage
+            </a>
+            <a
+              href="/admin/rooms/dashboard"
+              class="btn btn-light btn-sm rounded-pill shadow-hover"
+            >
+              <i class="bi bi-grid-3x3-gap"></i> Dashboard
+            </a>
+          </div>
+        </div>
+        <div class="card-body text-center py-5">
+          <div class="display-5 fw-bold text-success"><%= vacantRooms %></div>
+          <p class="text-muted">Vacant Rooms</p>
+          <hr class="mx-auto w-50" />
+          <p>
+            Total Rooms:
+            <span class="fw-bold text-primary"
+              ><%= vacantRooms + occupiedRooms %></span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-info text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0">
+            <i class="bi bi-calendar2-check me-2"></i>Bookings
+          </h5>
+          <a
+            href="/admin/bookings"
+            class="btn btn-light btn-sm rounded-pill shadow-hover"
+            >Manage</a
+          >
+        </div>
+        <div class="card-body">
+          <% if (recentBookings && recentBookings.length > 0) { %>
+          <ul class="list-group list-group-flush">
+            <% recentBookings.slice(0, 5).forEach(b => { %>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center hover-line py-3"
+            >
+              <div>
+                <i class="bi bi-journal-check text-info me-2 fs-5"></i>
+                Room <strong><%= b.roomNumber %></strong>
+                <small class="text-muted"
+                  >(<%= b.student?.name || "N/A" %>)</small
+                >
+              </div>
+              <span
+                class="badge <%= b.status === 'approved' ? 'bg-success' : b.status === 'pending' ? 'bg-warning text-dark' : 'bg-danger' %> rounded-pill px-3 py-2"
+              >
+                <%= b.status %>
+              </span>
+            </li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <div class="empty text-center py-4">
+            <i class="bi bi-calendar-x fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No bookings available</p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complaints -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-danger text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0">
+            <i class="bi bi-exclamation-circle me-2"></i>Complaints
+          </h5>
+          <a
+            href="/admin/complaints"
+            class="btn btn-light btn-sm rounded-pill shadow-hover"
+            >Manage</a
+          >
+        </div>
+        <div class="card-body">
+          <% if (recentComplaints && recentComplaints.length > 0) { %>
+          <ul class="list-group list-group-flush">
+            <% recentComplaints.slice(0, 5).forEach(c => { %>
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center hover-line py-3"
+            >
+              <div>
+                <i class="bi bi-chat-dots text-danger me-2 fs-5"></i>
+                <%= (c.description || "No description").substring(0, 50) %>...
+              </div>
+              <span
+                class="badge <%= c.status === 'resolved' ? 'bg-success' : 'bg-warning text-dark' %> rounded-pill px-3 py-2"
+              >
+                <%= c.status %>
+              </span>
+            </li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <div class="empty text-center py-4">
+            <i class="bi bi-chat-left-text fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No complaints found</p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaves -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-warning text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Leaves</h5>
+          <a
+            href="/admin/leaves"
+            class="btn btn-light btn-sm rounded-pill shadow-hover"
+          >
+            <i class="bi bi-eye me-1"></i> View
+          </a>
+        </div>
+        <div class="card-body text-center py-5">
+          <div class="display-6 fw-bold text-warning">
+            <%= pendingLeaves || 0 %>
+          </div>
+          <p class="text-muted">Pending Leave Requests</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notices -->
+    <div class="col-xl-6">
+      <div class="glass-card h-100 border-0 shadow-glass">
+        <div
+          class="card-header gradient-primary text-white d-flex justify-content-between align-items-center rounded-top-4"
+        >
+          <h5 class="mb-0"><i class="bi bi-megaphone me-2"></i>Notices</h5>
+          <a
+            href="/admin/notices"
+            class="btn btn-light btn-sm rounded-pill shadow-hover"
+          >
+            <i class="bi bi-eye me-1"></i> View
+          </a>
+        </div>
+        <div class="card-body text-center py-5">
+          <div class="display-6 fw-bold text-primary">
+            <%= totalNotices || 0 %>
+          </div>
+          <p class="text-muted">Total Announcements</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STYLES ===== -->
+<style>
+  body {
+    background: radial-gradient(circle at top left, #eef3ff, #f8faff 70%);
+    font-family: "Poppins", sans-serif;
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .dashboard-header {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(230, 230, 230, 0.5);
+  }
+  .date-pill {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 500;
+  }
+  .stat-card {
+    border-radius: 20px;
+    padding: 1.4rem;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-8px);
+  }
+  .stat-primary {
+    background: linear-gradient(135deg, #007bff, #5b4bff);
+  }
+  .stat-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+  }
+  .stat-warning {
+    background: linear-gradient(135deg, #ffb400, #ff8c00);
+  }
+  .stat-info {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    transition: 0.4s;
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+  }
+  .gradient-primary {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+  }
+  .gradient-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+  }
+  .gradient-info {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+  }
+  .gradient-danger {
+    background: linear-gradient(135deg, #ff5c75, #dc3545);
+  }
+  .gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #ff8c00);
+  }
+</style>

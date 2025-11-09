@@ -1,0 +1,307 @@
+<% title = "Manage Bookings" %>
+
+<section class="py-5 px-3 px-md-5">
+  <div class="container-fluid">
+    <!-- Header -->
+    <div
+      class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4"
+    >
+      <div>
+        <h2 class="fw-bold text-gradient mb-1">
+          <i class="bi bi-calendar-check me-2"></i> Manage Bookings
+        </h2>
+        <p class="text-muted mb-0">
+          Approve, reject, or review student booking requests.
+        </p>
+      </div>
+      <div class="date-pill shadow-sm mt-3 mt-md-0">
+        <i class="bi bi-clock me-2"></i> Updated: <%= new
+        Date().toLocaleDateString() %>
+      </div>
+    </div>
+
+    <!-- 🧾 Booking Summary Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-sm-6 col-lg-3">
+        <div
+          class="summary-card bg-gradient-primary text-white shadow-sm rounded-4 p-4 d-flex align-items-center justify-content-between"
+        >
+          <div>
+            <h6 class="fw-semibold mb-1">Total Bookings</h6>
+            <h3 class="fw-bold mb-0"><%= totalBookings || 0 %></h3>
+          </div>
+          <i class="bi bi-journal-check fs-1 opacity-75"></i>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div
+          class="summary-card bg-gradient-success text-white shadow-sm rounded-4 p-4 d-flex align-items-center justify-content-between"
+        >
+          <div>
+            <h6 class="fw-semibold mb-1">Approved</h6>
+            <h3 class="fw-bold mb-0"><%= approvedBookings || 0 %></h3>
+          </div>
+          <i class="bi bi-check-circle fs-1 opacity-75"></i>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div
+          class="summary-card bg-gradient-warning text-dark shadow-sm rounded-4 p-4 d-flex align-items-center justify-content-between"
+        >
+          <div>
+            <h6 class="fw-semibold mb-1">Pending</h6>
+            <h3 class="fw-bold mb-0"><%= pendingBookings || 0 %></h3>
+          </div>
+          <i class="bi bi-hourglass-split fs-1 opacity-75"></i>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div
+          class="summary-card bg-gradient-danger text-white shadow-sm rounded-4 p-4 d-flex align-items-center justify-content-between"
+        >
+          <div>
+            <h6 class="fw-semibold mb-1">Rejected</h6>
+            <h3 class="fw-bold mb-0"><%= rejectedBookings || 0 %></h3>
+          </div>
+          <i class="bi bi-x-circle fs-1 opacity-75"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter + Search -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 filter-card p-3">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+          <select id="filterStatus" class="form-select rounded-pill shadow-sm">
+            <option value="all">All Status</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <input
+            type="text"
+            id="searchInput"
+            class="form-control rounded-pill shadow-sm"
+            placeholder="🔍 Search by student name or room number..."
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 Bookings Table -->
+    <div class="card shadow-lg border-0 rounded-4 glass-card">
+      <div class="card-body p-0">
+        <% if (bookings && bookings.length > 0) { %>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="bookingTable">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Room</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach((b, idx) => { %>
+              <tr
+                data-status="<%= b.status %>"
+                data-search="<%= (b.student?.name || '').toLowerCase() %> <%= b.roomNumber %>"
+              >
+                <td><%= idx + 1 %></td>
+                <td>
+                  <i class="bi bi-person me-2 text-primary"></i><%=
+                  b.student?.name || "Unknown" %>
+                </td>
+                <td>
+                  <i class="bi bi-door-closed me-2 text-secondary"></i>Room <%=
+                  b.roomNumber %>
+                </td>
+                <td>
+                  <span
+                    class="badge rounded-pill px-3 py-2 text-uppercase <%= b.status === 'approved' ? 'bg-gradient-success' : b.status === 'pending' ? 'bg-gradient-warning text-dark' : 'bg-gradient-danger' %>"
+                  >
+                    <i
+                      class="bi <%= b.status === 'approved' ? 'bi-check-circle' : b.status === 'pending' ? 'bi-hourglass-split' : 'bi-x-circle' %> me-1"
+                    ></i>
+                    <%= b.status %>
+                  </span>
+                </td>
+                <td class="text-muted">
+                  <%= new Date(b.createdAt).toLocaleDateString() %>
+                </td>
+                <td>
+                  <% if (b.status === 'pending') { %>
+                  <form
+                    action="/admin/bookings/<%= b._id %>/approve"
+                    method="POST"
+                    class="d-inline"
+                  >
+                    <button
+                      class="btn btn-sm btn-success rounded-pill shadow-sm px-3"
+                    >
+                      <i class="bi bi-check2-circle me-1"></i> Approve
+                    </button>
+                  </form>
+                  <form
+                    action="/admin/bookings/<%= b._id %>/reject"
+                    method="POST"
+                    class="d-inline ms-1"
+                  >
+                    <button
+                      class="btn btn-sm btn-outline-danger rounded-pill shadow-sm px-3"
+                    >
+                      <i class="bi bi-x-circle me-1"></i> Reject
+                    </button>
+                  </form>
+                  <% } else { %>
+                  <span class="text-muted small">—</span>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } else { %>
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-info-circle fs-2 d-block mb-3"></i>
+          <h6 class="fw-semibold">No bookings available.</h6>
+          <p class="small">There are currently no active booking requests.</p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Toast Notifications -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div
+      id="successToast"
+      class="toast text-white bg-success border-0 shadow-lg"
+      role="alert"
+    >
+      <div class="d-flex align-items-center">
+        <div class="toast-body">
+          <i class="bi bi-check-circle me-2"></i>Action completed successfully!
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+        ></button>
+      </div>
+    </div>
+
+    <div
+      id="errorToast"
+      class="toast text-white bg-danger border-0 shadow-lg"
+      role="alert"
+    >
+      <div class="d-flex align-items-center">
+        <div class="toast-body">
+          <i class="bi bi-x-circle me-2"></i>Something went wrong.
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          data-bs-dismiss="toast"
+        ></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // 🔍 Search & Filter
+  const searchInput = document.getElementById("searchInput");
+  const filterStatus = document.getElementById("filterStatus");
+  const rows = document.querySelectorAll("#bookingTable tbody tr");
+
+  function filterBookings() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filter = filterStatus.value;
+
+    rows.forEach((row) => {
+      const matchesSearch = row.dataset.search.includes(searchTerm);
+      const matchesFilter = filter === "all" || row.dataset.status === filter;
+      row.style.display = matchesSearch && matchesFilter ? "" : "none";
+    });
+  }
+
+  searchInput.addEventListener("input", filterBookings);
+  filterStatus.addEventListener("change", filterBookings);
+
+  // ✅ Toast Trigger (for future AJAX usage)
+  document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", () => {
+      new bootstrap.Toast(document.getElementById("successToast")).show();
+    });
+  });
+</script>
+
+<!-- ✅ Styles -->
+<style>
+  body {
+    background: #f5f7fa;
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+  }
+  .filter-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+  }
+  .summary-card {
+    transition: all 0.3s ease;
+  }
+  .summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  .date-pill {
+    background: #f8f9fa;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+  }
+  .bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #ff8c00);
+  }
+  .bg-gradient-danger {
+    background: linear-gradient(135deg, #dc3545, #ff5c75);
+  }
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff, #00bfff);
+  }
+  .table {
+    font-size: 0.95rem;
+  }
+  .btn {
+    transition: all 0.3s ease;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .toast {
+    border-radius: 15px;
+    opacity: 0.95;
+  }
+</style>

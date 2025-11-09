@@ -1,0 +1,117 @@
+<% title = "Manage Notices" %>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-gradient">📢 Manage Notices</h2>
+    <button class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#addNoticeModal">
+      <i class="bi bi-plus-circle me-1"></i> Add Notice
+    </button>
+  </div>
+
+  <% if (notices.length === 0) { %>
+    <div class="alert alert-info text-center shadow-sm">No notices yet. Add your first one!</div>
+  <% } else { %>
+  <div class="card glass-card shadow-sm border-0">
+    <div class="card-body">
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Posted By</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% notices.forEach(n => { %>
+            <tr>
+              <td class="fw-semibold"><%= n.title %></td>
+              <td><%= n.description.substring(0, 60) %>...</td>
+              <td><%= n.postedBy %></td>
+              <td><%= new Date(n.createdAt).toLocaleDateString() %></td>
+              <td>
+                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editNoticeModal<%= n._id %>">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <a href="/admin/notices/delete/<%= n._id %>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this notice?')">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </td>
+            </tr>
+
+            <!-- ✏️ Edit Notice Modal -->
+            <div class="modal fade" id="editNoticeModal<%= n._id %>" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content rounded-4 border-0 shadow-lg">
+                  <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Notice</h5>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form action="/admin/notices/edit/<%= n._id %>" method="POST">
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" name="title" value="<%= n.title %>" class="form-control" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="4" required><%= n.description %></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary rounded-pill px-4">Update</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- 🆕 Add Notice Modal -->
+<div class="modal fade" id="addNoticeModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-gradient-success text-white">
+        <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Add Notice</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/admin/notices" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="4" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success rounded-pill px-4">Add Notice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.text-gradient {
+  background: linear-gradient(90deg, #007bff, #6610f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+.btn:hover { transform: translateY(-2px); }
+.modal-content { border-radius: 1rem; }
+</style>

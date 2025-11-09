@@ -1,0 +1,145 @@
+<% title = "Login" %>
+
+<section class="auth-page d-flex align-items-center justify-content-center py-5">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-4">
+        <div class="text-center mb-4">
+          <h3 class="fw-bold text-primary">Welcome Back 👋</h3>
+          <p class="text-muted">Login to your account to continue</p>
+        </div>
+
+        <% if (flash && flash.message) { %>
+          <div class="alert alert-<%= flash.type === 'error' ? 'danger' : 'success' %> text-center">
+            <%= flash.message %>
+          </div>
+        <% } %>
+
+        <form action="/login" method="POST" novalidate>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control form-control-lg"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control form-control-lg"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <a href="/register" class="small text-decoration-none">Create account</a>
+            <button class="btn btn-primary btn-lg px-4 rounded-pill">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Keep structure same but visually enhance it */
+  body {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite alternate;
+    font-family: "Poppins", sans-serif;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  .auth-page {
+    min-height: 90vh;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-primary {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .form-label {
+    color: #333;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  }
+
+  .btn {
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #0056b3, #0099ff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+  }
+
+  .text-muted {
+    font-size: 0.9rem;
+  }
+
+  a {
+    color: #007bff;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 2rem 1.5rem;
+    }
+    h3 {
+      font-size: 1.6rem;
+    }
+  }
+</style>

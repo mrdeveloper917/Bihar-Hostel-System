@@ -1,0 +1,135 @@
+<% title = "Room Details" %>
+
+<section class="container my-5">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-5">
+    <div>
+      <h2 class="fw-bold mb-1 text-gradient">
+        🏠 Room Details
+      </h2>
+      <p class="text-muted fs-6 mb-0">
+        View your current hostel room allocation and related information.
+      </p>
+    </div>
+    <div class="date-badge mt-3 mt-md-0">
+      <i class="bi bi-calendar3 me-1"></i>
+      Today: <%= (new Date()).toLocaleDateString() %>
+    </div>
+  </div>
+
+  <!-- Room Details Card -->
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card dashboard-card border-0 shadow-sm p-4">
+        <div class="d-flex align-items-center mb-4">
+          <div class="icon-circle bg-gradient-primary me-3">
+            <i class="bi bi-door-open text-white fs-3"></i>
+          </div>
+          <h4 class="fw-semibold mb-0">Your Room Information</h4>
+        </div>
+
+        <div class="row gy-3">
+          <div class="col-sm-6">
+            <p class="text-muted mb-1">Room Number</p>
+            <h5 class="fw-bold text-dark"><%= student.roomNumber || 'N/A' %></h5>
+          </div>
+
+          <div class="col-sm-6">
+            <p class="text-muted mb-1">Hostel Name</p>
+            <h5 class="fw-bold text-dark"><%= student.hostelName || 'N/A' %></h5>
+          </div>
+
+          <div class="col-sm-6">
+            <p class="text-muted mb-1">Room Capacity</p>
+            <h5 class="fw-bold text-dark"><%= student.roomCapacity || 'Not available' %></h5>
+          </div>
+
+          <div class="col-sm-6">
+            <p class="text-muted mb-1">Allotted Date</p>
+            <h5 class="fw-bold text-dark">
+              <%= student.allotmentDate ? new Date(student.allotmentDate).toDateString() : 'N/A' %>
+            </h5>
+          </div>
+
+          <div class="col-sm-12 mt-3">
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: 100%;"></div>
+            </div>
+            <p class="text-muted small mt-2 mb-0">Room allocated successfully 🎉</p>
+          </div>
+        </div>
+
+        <div class="text-end mt-4">
+          <a href="/student" class="btn btn-outline-secondary rounded-pill">
+            ← Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Styles -->
+<style>
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .date-badge {
+    background: #f8f9fa;
+    border: 1px solid #e1e1e1;
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .dashboard-card {
+    border-radius: 18px;
+    transition: all 0.35s ease;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff, #00bfff);
+  }
+
+  .progress {
+    background: #eaeaea;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-card {
+      text-align: center;
+    }
+
+    .icon-circle {
+      margin: 0 auto 12px;
+    }
+
+    .text-end {
+      text-align: center !important;
+    }
+  }
+</style>

@@ -1,0 +1,221 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #222;
+  --primary: #0052cc;
+  --muted: #6c757d;
+}
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --card: #0f1724;
+  --text: #e6eef8;
+  --primary: #3b82f6;
+  --muted: #98a1b3;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a {
+  color: var(--primary);
+}
+.navbar-brand img {
+  object-fit: cover;
+}
+.card {
+  background: var(--card);
+  border: 0;
+  border-radius: 10px;
+}
+.card.shadow-sm {
+  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
+}
+.card:hover {
+  transform: translateY(-6px);
+  transition: transform 180ms ease;
+}
+.footer {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.auth-page .card {
+  margin-top: 40px;
+}
+.table thead th {
+  border-bottom: 0;
+}
+.table-hover tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+.btn-primary {
+  background: var(--primary);
+  border: none;
+}
+.btn-outline-light {
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.small-muted {
+  color: var(--muted);
+}
+
+/* Theme toggle */
+#theme-toggle {
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+/* DataTables small tweak */
+.dataTables_wrapper .dataTables_filter input {
+  border-radius: 6px;
+  padding: 6px;
+}
+
+
+.was-validated .form-control:invalid {
+  border-color: #dc3545;
+}
+.was-validated .form-control:valid {
+  border-color: #28a745;
+}
+.invalid-feedback {
+  display: none;
+}
+.was-validated .form-control:invalid ~ .invalid-feedback {
+  display: block;
+}
+/* ============================================= */
+/* 🌗 GLOBAL THEME STYLES - LIGHT & DARK MODES   */
+/* ============================================= */
+
+/* ---------- LIGHT MODE (Default) ---------- */
+body {
+  background-color: #f8f9fa;
+  color: #212529;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.card,
+.table,
+.feature-card,
+.dashboard-card,
+.testimonial-card {
+  background-color: #fff;
+  color: #212529;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+a,
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+/* ---------- DARK MODE ---------- */
+body.dark-mode {
+  background-color: #0f0f11;
+  color: #e4e4e4;
+}
+
+.dark-mode .navbar,
+.dark-mode .glass-nav {
+  background: linear-gradient(90deg, rgba(25, 25, 30, 0.9), rgba(55, 55, 70, 0.9));
+  backdrop-filter: blur(12px);
+}
+
+.dark-mode .card,
+.dark-mode .feature-card,
+.dark-mode .testimonial-card,
+.dark-mode .dashboard-card {
+  background-color: #1a1b1f;
+  color: #f0f0f0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .table {
+  background-color: #1c1d20;
+  color: #e0e0e0;
+}
+
+.dark-mode .table thead th {
+  background-color: #25262a;
+  color: #ddd;
+}
+
+.dark-mode .btn-light {
+  background: #333;
+  color: #f8f9fa;
+  border: 1px solid #444;
+}
+
+.dark-mode .btn-outline-light {
+  color: #ddd;
+  border-color: #555;
+}
+
+.dark-mode .btn-outline-light:hover {
+  background: #00bfff;
+  color: #fff;
+  border-color: transparent;
+}
+
+.dark-mode a,
+.dark-mode .nav-link {
+  color: #ddd !important;
+}
+
+.dark-mode .nav-link.cool-link::after {
+  background-color: #00bfff;
+}
+
+.dark-mode .dropdown-menu {
+  background: #18191d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .dropdown-item {
+  color: #ddd;
+}
+
+.dark-mode .dropdown-item:hover {
+  background-color: #2a2b31;
+}
+
+.dark-mode .feature-card:hover {
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.15);
+}
+
+.dark-mode .text-gradient {
+  background: linear-gradient(90deg, #00bfff, #6610f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark-mode .cta-section {
+  background: linear-gradient(135deg, #111, #222, #333);
+  color: #f8f9fa;
+}
+
+.dark-mode .hero-section {
+  background: linear-gradient(115deg, #0d0d12, #141622, #202030);
+  color: #fff;
+}
+
+.dark-mode .hero-overlay {
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(0,0,0,0.6));
+}
+
+/* Smooth transitions everywhere */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
