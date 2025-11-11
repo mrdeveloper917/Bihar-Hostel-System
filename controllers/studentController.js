@@ -5,54 +5,77 @@ import Room from "../models/room.js";
 import Notice from "../models/noticeModel.js";
 import { razorpay } from "../config/razorpay.js";
 import crypto from "crypto";
+import Visitor from "../models/visitor.js";
+import Leave from "../models/leave.js";
+import Maintenance from "../models/maintenance.js";
+
+
 
 /* ===========================================================
    🏠 STUDENT DASHBOARD
 =========================================================== */
 export const getStudentDashboard = async (req, res) => {
   try {
-    const user = req.session.user;
+    // Get logged-in student
+    const student = await Student.findOne({
+      user: req.session.user._id,
+    }).lean();
 
-    const student = await Student.findOne({ user: user._id }).lean();
+    // If no student found, redirect gracefully
     if (!student) {
-      req.flash("error", "Student record not found!");
+      req.flash("error", "Student profile not found!");
       return res.redirect("/login");
     }
 
-    const complaintsPending = await Complaint.countDocuments({
-      student: student._id,
-      status: "open",
-    });
-    const complaintsResolved = await Complaint.countDocuments({
-      student: student._id,
-      status: "resolved",
-    });
-
-    const approvedLeaves = 0;
-
+    // Use try-catch per section to avoid total crash
+    let maintenance = [];
+    let visitors = [];
     let notices = [];
+
+    try {
+      maintenance = await Maintenance.find({ student: student._id })
+        .sort({ createdAt: -1 })
+        .lean();
+    } catch (err) {
+      console.warn("⚠️ Maintenance fetch failed:", err.message);
+    }
+
+    try {
+      visitors = await Visitor.find({ student: student._id })
+        .sort({ createdAt: -1 })
+        .lean();
+    } catch (err) {
+      console.warn("⚠️ Visitor fetch failed:", err.message);
+    }
+
     try {
       notices = await Notice.find().sort({ createdAt: -1 }).limit(5).lean();
     } catch (err) {
-      console.warn("⚠️ Notice model issue:", err.message);
-      notices = [];
+      console.warn("⚠️ Notice fetch failed:", err.message);
     }
 
-    const totalFeesPaid = student.totalFeesPaid || 0;
+    const leaves = await Leave.find({ student: student._id })
+      .sort({ createdAt: -1 })
+      .lean();
 
+    // Render dashboard safely
     res.render("dashboard/student_dashboard", {
       title: "Student Dashboard",
-      user,
+      user: req.session.user,
       student,
-      complaintsPending,
-      complaintsResolved,
-      approvedLeaves,
-      totalFeesPaid,
-      notices,
+      maintenance: maintenance || [], // ✅ always defined
+      visitors: visitors || [], // ✅ always defined
+      notices: notices || [], // ✅ always defined
+      complaintsPending: 0,
+      approvedLeaves: 0,
+      leaves: leaves || [],
     });
   } catch (error) {
-    console.error("❌ Error rendering student dashboard:", error);
-    res.status(500).render("pages/error500", { title: "Server Error", error });
+    console.error("❌ Error loading student dashboard:", error);
+    res.status(500).render("pages/error500", {
+      title: "Server Error",
+      error,
+    });
   }
 };
 
@@ -163,6 +186,61 @@ export const postComplaint = async (req, res) => {
   } catch (error) {
     console.error("❌ Error submitting complaint:", error);
     res.status(500).render("pages/error500", { title: "Server Error", error });
+  }
+};
+
+/* ===========================================================
+   🧾 STUDENT VISITOR MANAGEMENT
+=========================================================== */
+export const getStudentVisitors = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.session.user._id }).lean();
+    if (!student) {
+      req.flash("error", "Student profile not found!");
+      return res.redirect("/login");
+    }
+
+    const visitors = await Visitor.find({ student: student._id })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.render("student/visitors", {
+      title: "My Visitors",
+      user: req.session.user,
+      visitors,
+    });
+  } catch (error) {
+    console.error("🔥 Error loading visitors:", error);
+    res.status(500).render("pages/error500", { title: "Server Error", error });
+  }
+};
+
+export const postVisitorRequest = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.session.user._id });
+    if (!student) {
+      req.flash("error", "Student profile not found!");
+      return res.redirect("/login");
+    }
+
+    const { name, contact, purpose, inTime, outTime } = req.body;
+
+    await Visitor.create({
+      name,
+      contact,
+      purpose,
+      inTime,
+      outTime,
+      student: student._id,
+      status: "Pending",
+    });
+
+    req.flash("success", "Visitor request submitted successfully!");
+    res.redirect("/student/visitors");
+  } catch (error) {
+    console.error("🔥 Error submitting visitor request:", error);
+    req.flash("error", "Failed to submit visitor request.");
+    res.redirect("/student/visitors");
   }
 };
 

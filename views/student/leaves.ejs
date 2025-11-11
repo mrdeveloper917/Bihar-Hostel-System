@@ -5,7 +5,9 @@
   <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
     <div>
       <h2 class="fw-bold text-gradient mb-1">📢 Hostel Notices</h2>
-      <p class="text-muted small mb-0">Stay updated with all hostel-related announcements and events.</p>
+      <p class="text-muted small mb-0">
+        Stay updated with all hostel-related announcements and events.
+      </p>
     </div>
 
     <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
@@ -14,9 +16,12 @@
         id="searchNotice"
         class="form-control rounded-pill shadow-sm"
         placeholder="🔍 Search notices..."
-        style="max-width: 250px;"
+        style="max-width: 250px"
       />
-      <button class="btn btn-gradient rounded-pill shadow-sm" onclick="location.reload()">
+      <button
+        class="btn btn-gradient rounded-pill shadow-sm"
+        onclick="location.reload()"
+      >
         <i class="bi bi-arrow-clockwise me-1"></i> Refresh
       </button>
     </div>
@@ -25,14 +30,24 @@
   <!-- Notices Section -->
   <% if (notices.length === 0) { %>
   <div class="empty-state text-center py-5 glass-card shadow-sm">
-    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="130" class="mb-3" alt="No Notices" />
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+      width="130"
+      class="mb-3"
+      alt="No Notices"
+    />
     <h5 class="fw-semibold mb-2 text-muted">No Notices Yet</h5>
-    <p class="text-secondary small">All updates will appear here once posted by the warden.</p>
+    <p class="text-secondary small">
+      All updates will appear here once posted by the warden.
+    </p>
   </div>
   <% } else { %>
   <div class="row g-4" id="noticeContainer">
     <% notices.forEach(n => { %>
-    <div class="col-md-6 col-lg-4 notice-item" data-title="<%= n.title.toLowerCase() %>">
+    <div
+      class="col-md-6 col-lg-4 notice-item"
+      data-title="<%= n.title.toLowerCase() %>"
+    >
       <div class="card notice-card glass-card shadow-lg border-0 p-4 h-100">
         <div class="d-flex justify-content-between align-items-start mb-2">
           <h5 class="fw-semibold text-gradient">
@@ -44,15 +59,22 @@
         </div>
 
         <% if (n.category) { %>
-          <span class="badge category-badge <%= n.category.toLowerCase() %> mb-3">
-            <i class="bi bi-tag"></i> <%= n.category %>
-          </span>
+        <span class="badge category-badge <%= n.category.toLowerCase() %> mb-3">
+          <i class="bi bi-tag"></i> <%= n.category %>
+        </span>
         <% } %>
 
-        <p class="text-muted small mb-3"><%= n.content.substring(0, 200) %>...</p>
+        <p class="text-muted small mb-3">
+          <%= (n.content && typeof n.content === "string") ?
+          n.content.substring(0, 200) + "..." : "No description available." %>
+        </p>
 
         <% if (n.attachment) { %>
-        <a href="<%= n.attachment %>" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-auto">
+        <a
+          href="<%= n.attachment %>"
+          target="_blank"
+          class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-auto"
+        >
           <i class="bi bi-paperclip me-1"></i> View Attachment
         </a>
         <% } %>
@@ -65,122 +87,146 @@
 
 <!-- 🎨 STYLES -->
 <style>
-body {
-  background: linear-gradient(135deg, #f0f5ff, #e6ecff);
-  font-family: "Poppins", sans-serif;
-}
+  body {
+    background: linear-gradient(135deg, #f0f5ff, #e6ecff);
+    font-family: "Poppins", sans-serif;
+  }
 
-/* Gradient Text */
-.text-gradient {
-  background: linear-gradient(90deg, #007bff, #6610f2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  /* Gradient Text */
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-/* Button */
-.btn-gradient {
-  background: linear-gradient(90deg, #007bff, #00bfff);
-  color: #fff;
-  border: none;
-  transition: all 0.3s ease;
-}
-.btn-gradient:hover {
-  background: linear-gradient(90deg, #0069d9, #0099cc);
-  transform: translateY(-2px);
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
-}
+  /* Button */
+  .btn-gradient {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(90deg, #0069d9, #0099cc);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  }
 
-/* Cards */
-.glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-.glass-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-}
+  /* Cards */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
 
-/* Notice Card */
-.notice-card {
-  position: relative;
-  animation: fadeInUp 0.7s ease both;
-  overflow: hidden;
-}
-.notice-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(102, 16, 242, 0.1));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.notice-card:hover::before {
-  opacity: 1;
-}
+  /* Notice Card */
+  .notice-card {
+    position: relative;
+    animation: fadeInUp 0.7s ease both;
+    overflow: hidden;
+  }
+  .notice-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 123, 255, 0.1),
+      rgba(102, 16, 242, 0.1)
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .notice-card:hover::before {
+    opacity: 1;
+  }
 
-/* Category Tags */
-.category-badge {
-  font-size: 0.75rem;
-  border-radius: 20px;
-  padding: 5px 10px;
-}
-.category-badge.important {
-  background: linear-gradient(90deg, #ff4b2b, #ff416c);
-  color: white;
-}
-.category-badge.event {
-  background: linear-gradient(90deg, #00b09b, #96c93d);
-  color: white;
-}
-.category-badge.general {
-  background: linear-gradient(90deg, #007bff, #00bfff);
-  color: white;
-}
+  /* Category Tags */
+  .category-badge {
+    font-size: 0.75rem;
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
+  .category-badge.important {
+    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    color: white;
+  }
+  .category-badge.event {
+    background: linear-gradient(90deg, #00b09b, #96c93d);
+    color: white;
+  }
+  .category-badge.general {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: white;
+  }
 
-/* Search */
-#searchNotice {
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-#searchNotice:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
-}
+  /* Search */
+  #searchNotice {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  #searchNotice:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  }
 
-/* Empty State */
-.empty-state img {
-  opacity: 0.9;
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
+  /* Empty State */
+  .empty-state img {
+    opacity: 0.9;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
 
-/* Animation */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .notice-card { text-align: center; }
-  .category-badge { display: inline-block; }
-  #searchNotice { width: 100%; margin-bottom: 10px; }
-}
+  /* Responsive */
+  @media (max-width: 768px) {
+    .notice-card {
+      text-align: center;
+    }
+    .category-badge {
+      display: inline-block;
+    }
+    #searchNotice {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
 </style>
 
 <!-- 🔍 Search Script -->
 <script>
-document.getElementById("searchNotice")?.addEventListener("input", function () {
-  const query = this.value.toLowerCase();
-  document.querySelectorAll(".notice-item").forEach((item) => {
-    const title = item.getAttribute("data-title");
-    item.style.display = title.includes(query) ? "block" : "none";
-  });
-});
+  document
+    .getElementById("searchNotice")
+    ?.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll(".notice-item").forEach((item) => {
+        const title = item.getAttribute("data-title");
+        item.style.display = title.includes(query) ? "block" : "none";
+      });
+    });
 </script>

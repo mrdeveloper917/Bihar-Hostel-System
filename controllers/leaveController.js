@@ -1,5 +1,6 @@
 import Leave from "../models/leave.js";
 import Student from "../models/student.js";
+import Notice from "../models/noticeModel.js";
 
 // 📄 GET LEAVES PAGE
 export const getLeaves = async (req, res) => {
@@ -11,11 +12,14 @@ export const getLeaves = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
+    const notices = await Notice.find().sort({ createdAt: -1 }).limit(5).lean();
+
     res.render("student/leaves", {
       title: "My Leave Requests",
       user: req.session.user,
       student,
-      leaves,
+      leaves: leaves || [],
+      notices: notices || [],
     });
   } catch (error) {
     console.error("❌ Error loading leaves:", error);
@@ -53,7 +57,9 @@ export const cancelLeave = async (req, res) => {
     if (!leave) return res.status(404).json({ error: "Leave not found" });
 
     if (leave.status !== "pending")
-      return res.status(400).json({ error: "Only pending leaves can be canceled" });
+      return res
+        .status(400)
+        .json({ error: "Only pending leaves can be canceled" });
 
     await Leave.findByIdAndDelete(req.params.id);
     req.flash("success", "Leave request canceled!");

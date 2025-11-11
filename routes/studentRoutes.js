@@ -14,13 +14,14 @@ import {
   getStudentProfile,
   updateStudentProfile,
   updateProfilePicture,
+  getStudentVisitors,
+  postVisitorRequest,
 } from "../controllers/studentController.js";
 
 import {
   getMaintenanceRequests,
   postMaintenanceRequest,
 } from "../controllers/maintenanceController.js";
-
 
 import { protectStudent } from "../middleware/authMiddleware.js";
 import { upload } from "../config/multerConfig.js";
@@ -82,5 +83,11 @@ router.post(
   upload.single("profilePic"),
   updateProfilePicture
 );
+
+// 🧾 View Visitor Logs for Students
+router.get("/visitors", getStudentVisitors);
+
+// Add new visitor request
+router.post("/visitors/add", postVisitorRequest);
 
 export default router;

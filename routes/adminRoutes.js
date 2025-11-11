@@ -31,7 +31,7 @@ import {
   getAdminLeaves,
   approveLeave,
   rejectLeave,
-
+  
 } from "../controllers/adminController.js";
 
 import {
@@ -39,6 +39,9 @@ import {
   updateMaintenanceStatus,
 } from "../controllers/maintenanceController.js";
 
+import {
+   approveVisitor, checkoutVisitor
+} from "../controllers/visitorController.js"
 
 import { protectAdmin } from "../middleware/authMiddleware.js";
 
@@ -90,5 +93,7 @@ router.post("/leaves/reject/:id", protectAdmin, rejectLeave);
 
 router.get("/maintenance", protectAdmin, getAllMaintenance);
 router.post("/maintenance/:id/status", protectAdmin, updateMaintenanceStatus);
+router.post("/visitors/:id/approve", approveVisitor);
+router.post("/visitors/:id/checkout", checkoutVisitor);
 
 export default router;

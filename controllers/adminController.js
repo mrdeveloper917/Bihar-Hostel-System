@@ -6,7 +6,8 @@ import Booking from "../models/booking.js";
 import Leave from "../models/leave.js";
 import Notice from "../models/noticeModel.js";
 import { createObjectCsvStringifier } from "csv-writer";
-import Maintenance from "../models/maintenance.js"; //
+import Maintenance from "../models/maintenance.js";
+import Visitor from "../models/visitor.js";
 
 /* ===============================
    📊 ADMIN DASHBOARD
@@ -65,6 +66,12 @@ export const getAdminDashboard = async (req, res) => {
       .lean();
     // ✅ END FIX
 
+    const recentVisitors = await Visitor.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .populate("student", "roll hostelName")
+      .lean();
+
     res.render("dashboard/admin_dashboard", {
       title: "Admin Dashboard",
       user: req.session.user,
@@ -82,6 +89,7 @@ export const getAdminDashboard = async (req, res) => {
       students,
       pendingLeaves,
       totalNotices,
+      recentVisitors,
 
       // ✅ ADDED VALUES
       totalMaintenance,
@@ -95,9 +103,6 @@ export const getAdminDashboard = async (req, res) => {
       .render("pages/error500", { title: "Server Error", error: err });
   }
 };
-
-
-
 
 /* ===============================
    👨‍🎓 STUDENT MANAGEMENT

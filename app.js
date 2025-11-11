@@ -24,7 +24,7 @@ import leaveRoutes from "./routes/leaveRoutes.js";
 import adminLeaveRoutes from "./routes/adminLeaveRoutes.js";
 import studentNoticeRoutes from "./routes/studentNoticeRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
-
+import visitorRoutes from "./routes/visitorRoutes.js";
 
 
 
@@ -160,7 +160,7 @@ app.use("/", adminLeaveRoutes);
 app.use("/", studentNoticeRoutes);
 app.use("/payment", paymentRoutes);
 
-
+app.use("/", visitorRoutes);
 
 
 app.use("/", adminRegisterRoutes);

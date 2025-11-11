@@ -1,0 +1,263 @@
+<% title = "My Visitors" %>
+
+<section class="container py-5 animate__animated animate__fadeIn">
+  <!-- 🌟 Header -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <div>
+      <h2 class="fw-bold text-gradient mb-1">👥 My Visitor Log</h2>
+      <p class="text-muted small mb-0">
+        Submit and track your visitor entry requests with timing details.
+      </p>
+    </div>
+
+    <button
+      class="btn btn-gradient rounded-pill shadow-sm"
+      onclick="document.getElementById('addVisitorForm').scrollIntoView({ behavior: 'smooth' })"
+    >
+      <i class="bi bi-plus-circle me-1"></i> Add Visitor
+    </button>
+  </div>
+
+  <!-- 📝 Add Visitor Form -->
+  <div
+    id="addVisitorForm"
+    class="glass-card form-section shadow-sm rounded-4 p-4 mb-5"
+  >
+    <h5 class="fw-semibold mb-3 text-primary">
+      <i class="bi bi-person-plus me-2"></i>Add New Visitor
+    </h5>
+    <form action="/student/visitors/add" method="POST" class="row g-3">
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-light"
+            ><i class="bi bi-person"></i
+          ></span>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            placeholder="Visitor Name"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-light"
+            ><i class="bi bi-telephone"></i
+          ></span>
+          <input
+            type="text"
+            name="contact"
+            class="form-control"
+            placeholder="Contact (Optional)"
+          />
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-light"
+            ><i class="bi bi-clipboard-check"></i
+          ></span>
+          <input
+            type="text"
+            name="purpose"
+            class="form-control"
+            placeholder="Purpose of Visit"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-light"
+            ><i class="bi bi-clock"></i
+          ></span>
+          <input
+            type="datetime-local"
+            name="inTime"
+            class="form-control"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="input-group">
+          <span class="input-group-text bg-light"
+            ><i class="bi bi-clock-history"></i
+          ></span>
+          <input type="datetime-local" name="outTime" class="form-control" />
+        </div>
+      </div>
+
+      <div class="col-md-12 d-flex justify-content-end">
+        <button class="btn btn-gradient rounded-pill px-4">
+          <i class="bi bi-send me-1"></i>Submit
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 📋 Visitor Log Table -->
+  <% if (visitors.length === 0) { %>
+  <div class="empty-state text-center py-5 glass-card shadow-sm">
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+      width="130"
+      class="mb-3"
+      alt="No Visitors"
+    />
+    <h5 class="fw-semibold mb-2 text-muted">No Visitors Yet</h5>
+    <p class="text-secondary small">
+      Your visitor requests will appear here once added.
+    </p>
+  </div>
+  <% } else { %>
+  <div class="table-responsive glass-card shadow-lg p-4 rounded-4">
+    <table class="table table-borderless align-middle">
+      <thead class="table-header">
+        <tr>
+          <th>Visitor</th>
+          <th>Purpose</th>
+          <th>In Time</th>
+          <th>Out Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% visitors.forEach(v => { %>
+        <tr class="visitor-row">
+          <td class="fw-semibold"><%= v.name %></td>
+          <td><%= v.purpose %></td>
+          <td><%= new Date(v.inTime).toLocaleString() %></td>
+          <td><%= v.outTime ? new Date(v.outTime).toLocaleString() : '-' %></td>
+          <td>
+            <span
+              class="status-badge <%= v.status === 'Approved' ? 'status-approved' : v.status === 'Checked-Out' ? 'status-checkedout' : 'status-pending' %>"
+            >
+              <%= v.status %>
+            </span>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</section>
+
+<!-- 🎨 Styles -->
+<style>
+  body {
+    background: radial-gradient(circle at top left, #eef2ff, #f9fbff);
+    font-family: "Poppins", sans-serif;
+    color: #2c3e50;
+  }
+
+  /* 🌈 Gradient Text */
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* 🌟 Glass Card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  /* 🌈 Gradient Button */
+  .btn-gradient {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(90deg, #0069d9, #0099cc);
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(0, 191, 255, 0.3);
+  }
+
+  /* 🧾 Table */
+  .table-header {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: white;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border-radius: 10px;
+  }
+  .table td {
+    vertical-align: middle;
+    font-size: 0.9rem;
+  }
+  .visitor-row:hover {
+    background: rgba(0, 123, 255, 0.05);
+    transition: 0.3s ease;
+  }
+
+  /* 🟢 Status Badges */
+  .status-badge {
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .status-approved {
+    background: linear-gradient(90deg, #00c851, #28a745);
+    color: white;
+  }
+  .status-pending {
+    background: linear-gradient(90deg, #ffc107, #ff9f43);
+    color: #212529;
+  }
+  .status-checkedout {
+    background: linear-gradient(90deg, #6c757d, #adb5bd);
+    color: white;
+  }
+
+  /* ✨ Empty State */
+  .empty-state img {
+    opacity: 0.9;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* 📱 Responsive */
+  @media (max-width: 768px) {
+    .table td,
+    .table th {
+      font-size: 0.8rem;
+    }
+    .input-group-text {
+      display: none;
+    }
+    .btn-gradient {
+      width: 100%;
+    }
+    form .col-md-3 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
+</style>

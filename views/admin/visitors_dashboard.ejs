@@ -1,0 +1,211 @@
+<% title = "Visitor Logs" %>
+
+<section class="container py-5 animate__animated animate__fadeIn">
+  <!-- 🧭 Header -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+    <div>
+      <h2 class="fw-bold text-gradient mb-2">🧾 Visitor Logs</h2>
+      <p class="text-muted small mb-0">
+        Track and manage all visitor activities within the hostel.
+      </p>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
+      <input
+        type="text"
+        id="searchVisitor"
+        class="form-control rounded-pill shadow-sm"
+        placeholder="🔍 Search visitor name..."
+        style="max-width: 250px"
+      />
+      <button
+        class="btn btn-gradient rounded-pill shadow-sm"
+        onclick="location.reload()"
+      >
+        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- 📋 Visitor Table -->
+  <% if (visitors.length === 0) { %>
+  <div class="empty-state text-center py-5 glass-card shadow-sm">
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+      width="130"
+      class="mb-3"
+      alt="No Visitors"
+    />
+    <h5 class="fw-semibold mb-2 text-muted">No Visitors Found</h5>
+    <p class="text-secondary small">
+      Visitor logs will appear here once visitors are registered.
+    </p>
+  </div>
+  <% } else { %>
+  <div class="table-responsive glass-card shadow-lg p-4 rounded-4">
+    <table class="table table-borderless align-middle mb-0" id="visitorTable">
+      <thead class="table-header">
+        <tr>
+          <th scope="col">👤 Visitor</th>
+          <th scope="col">🎓 Student Roll</th>
+          <th scope="col">📝 Purpose</th>
+          <th scope="col">📊 Status</th>
+          <th scope="col">🕒 In Time</th>
+          <th scope="col">🏁 Out Time</th>
+          <th scope="col">✅ Approved By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% visitors.forEach(v => { %>
+        <tr class="visitor-row" data-name="<%= v.name.toLowerCase() %>">
+          <td><strong><%= v.name %></strong></td>
+          <td><%= v.student?.roll || "N/A" %></td>
+          <td><%= v.purpose %></td>
+          <td>
+            <span
+              class="badge status-badge <%= v.status === 'Approved' ? 'status-approved' : v.status === 'Checked-Out' ? 'status-checkedout' : 'status-pending' %>"
+            >
+              <%= v.status %>
+            </span>
+          </td>
+          <td><%= new Date(v.inTime).toLocaleString() %></td>
+          <td><%= v.outTime ? new Date(v.outTime).toLocaleString() : '-' %></td>
+          <td><%= v.approvedBy?.name || '-' %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</section>
+
+<!-- 🎨 Styles -->
+<style>
+  body {
+    background: radial-gradient(circle at top left, #eef3ff, #f8fbff);
+    font-family: "Poppins", sans-serif;
+  }
+
+  /* Gradient Header */
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Buttons */
+  .btn-gradient {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(90deg, #0069d9, #0099cc);
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  }
+
+  /* Glass Card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    transition: all 0.4s ease;
+  }
+  .glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Table */
+  .table-header {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: white;
+    border-radius: 10px;
+  }
+  .table th {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .table td {
+    color: #333;
+    font-size: 0.9rem;
+  }
+  .visitor-row:hover {
+    background: rgba(0, 123, 255, 0.06);
+    transition: 0.2s ease;
+    cursor: pointer;
+  }
+
+  /* Status Badges */
+  .status-badge {
+    padding: 6px 12px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .status-approved {
+    background: linear-gradient(90deg, #00c851, #28a745);
+    color: white;
+  }
+  .status-pending {
+    background: linear-gradient(90deg, #ffc107, #ff9f43);
+    color: #212529;
+  }
+  .status-checkedout {
+    background: linear-gradient(90deg, #6c757d, #adb5bd);
+    color: white;
+  }
+
+  /* Search */
+  #searchVisitor {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  #searchVisitor:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  }
+
+  /* Empty State */
+  .empty-state img {
+    opacity: 0.9;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .table th,
+    .table td {
+      font-size: 0.8rem;
+    }
+    #searchVisitor {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+</style>
+
+<!-- 🔍 Search Filter Script -->
+<script>
+  document
+    .getElementById("searchVisitor")
+    ?.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll(".visitor-row").forEach((row) => {
+        const name = row.getAttribute("data-name");
+        row.style.display = name.includes(query) ? "" : "none";
+      });
+    });
+</script>
