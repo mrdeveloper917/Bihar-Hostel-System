@@ -93,7 +93,8 @@ app.use(
           "https://cdnjs.cloudflare.com",
           "https://cdn.jsdelivr.net",
         ],
-        imgSrc: ["'self'", "data:", "blob:", "https://cdn.jsdelivr.net"],
+        imgSrc: ["'self'", "data:", "blob:", "https://cdn.jsdelivr.net", "https://images.unsplash.com",
+        "https://*.unsplash.com"],
         "connect-src": [
           "'self'",
           "https://cdn.jsdelivr.net",

@@ -1,88 +1,504 @@
-<% title = "About" %>
+<% title = "About | Bihar Polytechnic Hostel Management System" %>
 
-<section class="py-5 about-section">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2 class="fw-bold text-gradient mb-3 animate__animated animate__fadeInDown">
-        About Bihar Hostel System
-      </h2>
-      <p class="text-muted fs-5 animate__animated animate__fadeInUp">
-        A modern digital solution for hostel and student management across Bihar colleges.
-      </p>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
 
-    <div class="row g-4">
-      <div class="col-md-6">
-        <div class="card p-4 border-0 shadow-sm glass-effect h-100 animate__animated animate__fadeInLeft">
-          <h5 class="fw-semibold text-primary mb-3">
-            <i class="bi bi-gear-wide-connected me-2"></i>System Overview
-          </h5>
-          <p class="text-muted mb-0">
-            The Bihar Hostel Management System helps automate hostel operations,
-            from student registration to room allotment, fee tracking, and complaint handling.
-            It simplifies administrative work and improves student convenience.
-          </p>
+    <!-- Bootstrap & Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #007bff;
+        --secondary: #6610f2;
+        --accent: #00c6ff;
+        --bg-light: #f8fafc;
+        --text: #1f2937;
+        --muted: #6b7280;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--bg-light);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* HERO SECTION */
+      .hero-section {
+        position: relative;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        );
+        background-size: 300% 300%;
+        animation: gradientFlow 10s ease infinite;
+        color: white;
+        text-align: center;
+        padding: 120px 20px;
+        overflow: hidden;
+      }
+
+      @keyframes gradientFlow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        top: -100px;
+        left: -150px;
+        filter: blur(100px);
+      }
+
+      .hero-section::after {
+        content: "";
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        bottom: -100px;
+        right: -100px;
+        filter: blur(120px);
+      }
+
+      .hero-section h1 {
+        font-weight: 800;
+        font-size: 2.8rem;
+        background: linear-gradient(90deg, #fff, #dbeafe, #a5b4fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-section .lead {
+        color: #e2e8f0;
+        max-width: 750px;
+        margin: 0 auto;
+      }
+
+      .hero-btn {
+        background: white;
+        color: var(--primary);
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 12px 40px;
+        transition: 0.3s ease;
+      }
+
+      .hero-btn:hover {
+        background: #fff3;
+        color: #fff;
+        transform: scale(1.05);
+      }
+
+      /* ABOUT SECTION */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        border-radius: 18px;
+        padding: 30px;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .glass-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      /* TEAM SECTION */
+      .team-section {
+        background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+        padding: 80px 0;
+      }
+
+      .flip-card {
+        perspective: 1000px;
+        width: 100%;
+        max-width: 320px;
+        margin: auto;
+      }
+
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 18px;
+        backface-visibility: hidden;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .flip-card-front {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 25px;
+      }
+
+      .flip-card-front img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        object-fit: cover;
+        margin-bottom: 15px;
+      }
+
+      .flip-card-back {
+        background: #fff;
+        transform: rotateY(180deg);
+        text-align: center;
+        padding: 30px;
+      }
+
+      .skills span {
+        background: #e7f1ff;
+        color: var(--primary);
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .contact-links a {
+        color: var(--secondary);
+        font-size: 1.3rem;
+        margin: 0 8px;
+        transition: all 0.3s ease;
+      }
+
+      .contact-links a:hover {
+        color: var(--primary);
+        transform: scale(1.2);
+      }
+
+      .team-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 25px;
+        border: 1px solid #e0e0e0;
+        transition: 0.3s;
+      }
+
+      .team-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--primary);
+        transition: all 0.4s;
+      }
+
+      .team-card:hover .avatar {
+        transform: scale(1.05);
+        border-color: var(--secondary);
+      }
+
+      /* VISION SECTION */
+      .vision-section {
+        background: linear-gradient(135deg, #007bff, #6610f2);
+        color: white;
+        text-align: center;
+        padding: 80px 20px;
+        position: relative;
+      }
+
+      .vision-section h2 {
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .vision-section .vision-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+      }
+
+      .vision-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border-radius: 16px;
+        padding: 25px;
+        max-width: 300px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .vision-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+      }
+
+      .vision-card i {
+        font-size: 2rem;
+        color: #ffeb3b;
+        margin-bottom: 12px;
+      }
+
+      [data-animate] {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s ease;
+      }
+
+      [data-animate].visible {
+        opacity: 1;
+        transform: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HERO -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 data-animate>About Bihar Polytechnic Hostel Management System</h1>
+        <p class="lead mt-3" data-animate>
+          Empowering Bihar’s Polytechnic Colleges with a next-gen digital hostel
+          platform — transparent, automated, and student-friendly.
+        </p>
+        <a href="/register" class="btn hero-btn mt-4 shadow" data-animate>
+          <i class="bi bi-person-plus me-2"></i> Get Started
+        </a>
+      </div>
+    </section>
+
+    <!-- ABOUT DETAILS -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-6" data-animate>
+            <div class="glass-card">
+              <h5 class="fw-bold text-primary mb-3">
+                <i class="bi bi-gear-fill me-2"></i> System Overview
+              </h5>
+              <p>
+                The Bihar Polytechnic Hostel Management System aims to
+                digitalize hostel processes across Bihar’s government
+                polytechnic institutions — including student registration, room
+                allotment, fee collection, complaint tracking, and leave
+                management — in one centralized web platform.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6" data-animate>
+            <div class="glass-card">
+              <h5 class="fw-bold text-success mb-3">
+                <i class="bi bi-laptop me-2"></i> Technology Stack
+              </h5>
+              <p>
+                Built using <strong>Node.js</strong>, <strong>Express</strong>,
+                <strong>MongoDB</strong>, and <strong>EJS</strong> for backend
+                integration — with <strong>HTML5</strong>,
+                <strong>CSS3</strong>, and <strong>Bootstrap</strong> for a
+                clean, responsive UI. Designed for real-world use and future
+                expansion.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12" data-animate>
+            <div class="glass-card">
+              <h5 class="fw-bold text-info mb-3">
+                <i class="bi bi-lightbulb-fill me-2"></i> Why This Project
+                Matters
+              </h5>
+              <p>
+                Previously, hostel records were maintained manually, which
+                caused inefficiencies, loss of data, and delayed communication.
+                With this digital platform, all stakeholders — from students to
+                wardens and administrators — gain real-time transparency and
+                control. Complaints, fees, and visitor logs can now be managed
+                with just a few clicks, promoting accountability and modern
+                digital governance in educational institutions.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="col-md-6">
-        <div class="card p-4 border-0 shadow-sm glass-effect h-100 animate__animated animate__fadeInRight">
-          <h5 class="fw-semibold text-success mb-3">
-            <i class="bi bi-laptop me-2"></i>Tech Stack
-          </h5>
-          <p class="text-muted mb-0">
-            Built using <strong>Node.js</strong>, <strong>Express</strong>, and <strong>MongoDB</strong>
-            for powerful backend management. The frontend is designed using
-            <strong>HTML</strong>, <strong>CSS</strong>, <strong>JavaScript</strong>, and <strong>EJS</strong>
-            for fast, interactive UI.
-          </p>
+    <!-- TEAM -->
+    <section class="team-section text-center">
+      <div class="container">
+        <h2 class="fw-bold mb-5 text-primary" data-animate>Meet Our Team</h2>
+        <div class="row g-4 justify-content-center">
+          <!-- AYUSH FLIP CARD -->
+          <div class="col-md-4" data-animate>
+            <div class="flip-card">
+              <div class="flip-card-inner">
+                <div class="flip-card-front">
+                  <img src="/img/ayush.jpg" alt="Ayush Thakur" />
+                  <h4 class="fw-bold mt-3">Ayush Thakur</h4>
+                  <p class="mb-0">Full Stack Developer</p>
+                  <small>Team Leader</small>
+                </div>
+                <div class="flip-card-back">
+                  <h5>Skills</h5>
+                  <div class="skills">
+                    <span>Node.js</span><span>Express</span
+                    ><span>MongoDB</span> <span>React</span><span>EJS</span
+                    ><span>UI/UX</span>
+                  </div>
+                  <p class="mt-3 small text-muted">
+                    "Turning hostel management into a seamless digital
+                    experience."
+                  </p>
+                  <div class="contact-links mt-3">
+                    <a href="#"><i class="bi bi-github"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-envelope"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEAM MEMBERS -->
+          <div class="col-md-3" data-animate>
+            <div class="team-card">
+              <img src="/img/rohan.jpg" class="avatar mb-3" />
+              <h6 class="fw-bold mb-1">Rohan Singh</h6>
+              <p class="text-muted small">Database Manager</p>
+            </div>
+          </div>
+
+          <div class="col-md-3" data-animate>
+            <div class="team-card">
+              <img src="/img/amrita.jpg" class="avatar mb-3" />
+              <h6 class="fw-bold mb-1">Amrita Kumari</h6>
+              <p class="text-muted small">Frontend Developer</p>
+            </div>
+          </div>
+
+          <div class="col-md-3" data-animate>
+            <div class="team-card">
+              <img src="/img/ravi.jpg" class="avatar mb-3" />
+              <h6 class="fw-bold mb-1">Ravi Ranjan</h6>
+              <p class="text-muted small">UI/UX Designer</p>
+            </div>
+          </div>
+
+          <div class="col-md-3" data-animate>
+            <div class="team-card">
+              <img src="/img/priyanshu.jpg" class="avatar mb-3" />
+              <h6 class="fw-bold mb-1">Priyanshu Raj</h6>
+              <p class="text-muted small">Frontend Developer</p>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="col-md-12">
-        <div class="card p-4 border-0 shadow-sm glass-effect animate__animated animate__fadeInUp">
-          <h5 class="fw-semibold text-info mb-3">
-            <i class="bi bi-people-fill me-2"></i>Mission
-          </h5>
-          <p class="text-muted mb-0">
-            Our goal is to make hostel administration seamless, transparent, and paperless.
-            From complaint tracking to digital fee payment and room allotment,
-            this system ensures that both administrators and students benefit from a simple yet powerful platform.
-          </p>
+    <!-- VISION & FUTURE SCOPE -->
+    <section class="vision-section">
+      <div class="container">
+        <h2 data-animate>Our Vision & Future Scope</h2>
+        <p class="lead mb-5 opacity-90" data-animate>
+          Building a digital ecosystem for hostels — smart, data-driven, and
+          future-ready.
+        </p>
+        <div class="vision-cards">
+          <div class="vision-card" data-animate>
+            <i class="bi bi-phone-fill"></i>
+            <h6 class="fw-semibold mt-2">Mobile App Integration</h6>
+            <p class="small opacity-75">
+              Dedicated mobile app for students and wardens to manage hostels
+              from anywhere.
+            </p>
+          </div>
+          <div class="vision-card" data-animate>
+            <i class="bi bi-bar-chart-fill"></i>
+            <h6 class="fw-semibold mt-2">AI-Based Data Analytics</h6>
+            <p class="small opacity-75">
+              Predict hostel occupancy, detect patterns, and automate
+              maintenance insights.
+            </p>
+          </div>
+          <div class="vision-card" data-animate>
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            <h6 class="fw-semibold mt-2">Cloud Scalability</h6>
+            <p class="small opacity-75">
+              Easily deployable for all Bihar Polytechnic hostels with
+              centralized cloud hosting.
+            </p>
+          </div>
+          <div class="vision-card" data-animate>
+            <i class="bi bi-shield-lock-fill"></i>
+            <h6 class="fw-semibold mt-2">Enhanced Security</h6>
+            <p class="small opacity-75">
+              Multi-layered authentication, OTP logins, and encrypted data
+              storage.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<style>
-  .text-gradient {
-    background: linear-gradient(90deg, #007bff, #6610f2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
-    transition: all 0.3s ease;
-  }
-
-  .glass-effect:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
-
-  .about-section {
-    background: linear-gradient(180deg, #f8f9fa 0%, #eef2ff 100%);
-    min-height: 80vh;
-  }
-
-  @media (max-width: 768px) {
-    .card {
-      text-align: center;
-    }
-  }
-</style>
+    <script>
+      // Animate on scroll
+      const animatedEls = document.querySelectorAll("[data-animate]");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      animatedEls.forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
