@@ -1,161 +1,211 @@
-<% title = "Home" %>
+<% title = "Bihar Polytechnic Hostel Management System" %>
 
-<!-- HERO SECTION -->
+<!-- ========================= HERO SECTION ========================= -->
 <section
-  class="hero-section position-relative d-flex align-items-center text-white overflow-hidden"
+  class="hero-section position-relative d-flex flex-column align-items-center justify-content-center text-white text-center overflow-hidden"
 >
-  <div class="hero-overlay"></div>
+  <div class="hero-bg"></div>
   <canvas id="heroParticles"></canvas>
 
-  <div class="container position-relative z-2 py-5">
-    <div class="row align-items-center justify-content-between">
-      <!-- LEFT CONTENT -->
-      <div class="col-lg-6 col-md-7 animate__animated animate__fadeInLeft">
-        <h1 class="fw-bold display-4 mb-3 animated-gradient-text">
-          Transforming Hostel Life in Bihar
-        </h1>
-        <p class="lead text-light mb-4 opacity-90">
-          Experience a next-generation Hostel Management System designed for
-          simplicity, transparency, and speed — empowering both students and
-          administrators.
-        </p>
+  <div class="container position-relative z-2">
+    <div
+      class="glass-hero p-5 rounded-4 shadow-lg animate__animated animate__fadeInUp"
+    >
+      <img
+        src="/img/logo.png"
+        alt="Bihar Govt Logo"
+        width="90"
+        class="mb-3 opacity-90"
+      />
 
-        <div class="d-flex flex-wrap gap-3">
-          <a
-            href="/register"
-            class="btn btn-light btn-lg rounded-pill px-5 shadow-lg hero-btn"
-          >
-            <i class="bi bi-person-plus me-2"></i> Get Started
-          </a>
-          <a
-            href="/about"
-            class="btn btn-outline-light btn-lg rounded-pill px-5 hero-btn-alt"
-          >
-            <i class="bi bi-info-circle me-2"></i> Learn More
-          </a>
-          <a
-            href="/contact"
-            class="btn btn-gradient btn-lg rounded-pill px-5 text-white"
-          >
-            <i class="bi bi-envelope-paper me-2"></i> Contact Us
-          </a>
-        </div>
+      <h1 class="display-5 fw-bold mb-3 hero-heading gradient-text">
+        Bihar Polytechnic <br />
+        Hostel Management System
+      </h1>
+
+      <p class="lead mb-4 text-light opacity-90 col-lg-8 mx-auto">
+        A Government Initiative for
+        <strong>Digital, Transparent & Smart Hostel Management</strong> —
+        simplifying student life across all Polytechnic Colleges.
+      </p>
+
+      <div class="d-flex justify-content-center flex-wrap gap-3">
+        <a
+          href="/register"
+          class="btn btn-glow btn-lg rounded-pill px-5 shadow"
+        >
+          <i class="bi bi-person-plus me-2"></i> Get Started
+        </a>
+        <a href="/login" class="btn btn-outline-light btn-lg rounded-pill px-5">
+          <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        </a>
       </div>
 
-      <!-- RIGHT IMAGE -->
-      <div
-        class="col-lg-5 col-md-5 text-center mt-5 mt-md-0 animate__animated animate__fadeInRight"
-      >
+      <div class="mt-4 text-light-50 small fw-light">
+        <i class="bi bi-geo-alt"></i> Department of Science & Technology,
+        Government of Bihar
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= NOTICE SECTION ========================= -->
+<section class="notice-bar py-2 text-white text-center">
+  <marquee behavior="scroll" direction="left" scrollamount="6">
+    📰 Latest Notice: Hostel fee payment for Semester 5 is now open • New room
+    allotment results declared • Maintenance portal open for students • Visitors
+    tracking now digitalized • Check your leave approval status online
+  </marquee>
+</section>
+
+<!-- ========================= ABOUT SECTION ========================= -->
+<section class="about-section py-5 bg-light text-center">
+  <div class="container animate__animated animate__fadeIn">
+    <h2 class="fw-bold text-gradient mb-3">Our Vision & Mission</h2>
+    <p class="text-muted mb-5 col-lg-8 mx-auto">
+      To make every hostel across Bihar’s Polytechnic colleges fully digital,
+      fair, and transparent — bringing smart automation, student convenience,
+      and accountability.
+    </p>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4">
+        <div class="info-card p-4 shadow-glass h-100">
+          <div class="icon-circle bg-gradient-primary mb-3">
+            <i class="bi bi-cpu fs-3 text-white"></i>
+          </div>
+          <h6 class="fw-semibold mb-2">Digital Governance</h6>
+          <p class="small text-muted">
+            All hostel processes — allotment, fee, and complaints — integrated
+            under one digital platform.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card p-4 shadow-glass h-100">
+          <div class="icon-circle bg-gradient-success mb-3">
+            <i class="bi bi-shield-check fs-3 text-white"></i>
+          </div>
+          <h6 class="fw-semibold mb-2">Transparency & Safety</h6>
+          <p class="small text-muted">
+            Students get clear, trackable updates; admins maintain integrity and
+            accountability.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="info-card p-4 shadow-glass h-100">
+          <div class="icon-circle bg-gradient-warning mb-3">
+            <i class="bi bi-lightning-charge fs-3 text-white"></i>
+          </div>
+          <h6 class="fw-semibold mb-2">Efficiency & Innovation</h6>
+          <p class="small text-muted">
+            Cutting-edge tools for hostel automation with minimal paperwork.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FEATURES SECTION ========================= -->
+<section class="features-section py-5 text-center">
+  <div class="container animate__animated animate__fadeInUp">
+    <h2 class="fw-bold text-gradient mb-4">Smart Digital Features</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card p-4 shadow-glass h-100">
+          <i class="bi bi-door-open fs-2 mb-3 text-primary"></i>
+          <h6 class="fw-semibold">Room Allotment</h6>
+          <p class="small text-muted">
+            Smart & automatic allotment of rooms with vacancy and preference
+            tracking.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card p-4 shadow-glass h-100">
+          <i class="bi bi-wallet2 fs-2 mb-3 text-success"></i>
+          <h6 class="fw-semibold">Online Fee Payment</h6>
+          <p class="small text-muted">
+            Razorpay & Paytm integration for secure hostel payments with
+            e-receipts.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card p-4 shadow-glass h-100">
+          <i class="bi bi-chat-left-text fs-2 mb-3 text-warning"></i>
+          <h6 class="fw-semibold">Complaint & Maintenance</h6>
+          <p class="small text-muted">
+            Raise complaints and track their status directly from your student
+            dashboard.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= GALLERY SECTION ========================= -->
+<section class="gallery-section py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="fw-bold text-gradient mb-4">Campus Glimpse</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
         <img
-          src="/img/hostel-hero.png"
-          alt="Hostel Management"
-          class="img-fluid hero-img"
+          src="/img/hostel1.jpg"
+          class="img-fluid rounded-4 shadow"
+          alt="Hostel Block"
+        />
+      </div>
+      <div class="col-md-4">
+        <img
+          src="/img/hostel2.jpg"
+          class="img-fluid rounded-4 shadow"
+          alt="Campus Area"
+        />
+      </div>
+      <div class="col-md-4">
+        <img
+          src="/img/hostel3.jpg"
+          class="img-fluid rounded-4 shadow"
+          alt="Student Mess"
         />
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES SECTION -->
-<section class="features-section py-5 bg-light">
-  <div class="container text-center">
-    <h2 class="fw-bold text-gradient mb-3">Our Core Features</h2>
-    <p class="text-muted mb-5">
-      Simplify every part of hostel management with a unified system.
-    </p>
-
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
-          <div class="icon-circle bg-gradient-primary mb-3">
-            <i class="bi bi-house-door fs-2 text-white"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Room Allotment</h5>
-          <p class="text-muted small">
-            Smart, fair, and automated room assignments for every student.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
-          <div class="icon-circle bg-gradient-warning mb-3">
-            <i class="bi bi-chat-left-text fs-2 text-white"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Complaint Tracking</h5>
-          <p class="text-muted small">
-            Raise and monitor hostel complaints in real-time, stress-free.
-          </p>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="feature-card p-4 h-100 shadow-sm border-gradient">
-          <div class="icon-circle bg-gradient-success mb-3">
-            <i class="bi bi-cash-stack fs-2 text-white"></i>
-          </div>
-          <h5 class="fw-semibold mb-2">Fee Management</h5>
-          <p class="text-muted small">
-            Seamless online payments and transparent invoice management.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS SECTION -->
+<!-- ========================= TESTIMONIALS ========================= -->
 <section class="testimonials-section py-5 text-center">
   <div class="container">
-    <h2 class="fw-bold text-gradient mb-4">What Our Students Say</h2>
-
-    <div
-      id="testimonialCarousel"
-      class="carousel slide"
-      data-bs-ride="carousel"
-    >
+    <h2 class="fw-bold text-gradient mb-4">What Students Say</h2>
+    <div id="carouselTestimonials" class="carousel slide">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <div class="testimonial-card p-4 mx-auto">
-            <p class="text-muted fst-italic mb-3">
-              “This platform completely simplified our hostel management — from
-              fees to complaints, everything’s online!”
-            </p>
-            <img
-              src="/img/avatar.png"
-              alt="Anjali"
-              class="rounded-circle mb-3"
-              width="60"
-              height="60"
-            />
-            <h6 class="fw-semibold mb-0">Anjali Kumari</h6>
-            <small class="text-muted">Polytechnic Student</small>
-          </div>
+          <blockquote class="blockquote">
+            “This system made our hostel management faster, transparent, and
+            stress-free.”
+          </blockquote>
+          <img src="/img/avatar.png" width="60" class="rounded-circle mt-3" />
+          <h6 class="mt-2 fw-semibold">Anjali Kumari</h6>
+          <p class="text-muted small">Patna Polytechnic</p>
         </div>
-
         <div class="carousel-item">
-          <div class="testimonial-card p-4 mx-auto">
-            <p class="text-muted fst-italic mb-3">
-              “A great initiative! User-friendly interface and smooth fee
-              management system.”
-            </p>
-            <img
-              src="/img/avatar.png"
-              alt="Ravi"
-              class="rounded-circle mb-3"
-              width="60"
-              height="60"
-            />
-            <h6 class="fw-semibold mb-0">Ravi Kumar</h6>
-            <small class="text-muted">Hostel Resident</small>
-          </div>
+          <blockquote class="blockquote">
+            “Online payment and complaint tracking have made hostel life simpler
+            than ever.”
+          </blockquote>
+          <img src="/img/avatar.png" width="60" class="rounded-circle mt-3" />
+          <h6 class="mt-2 fw-semibold">Ravi Kumar</h6>
+          <p class="text-muted small">Muzaffarpur Polytechnic</p>
         </div>
       </div>
-
       <button
         class="carousel-control-prev"
         type="button"
-        data-bs-target="#testimonialCarousel"
+        data-bs-target="#carouselTestimonials"
         data-bs-slide="prev"
       >
         <span
@@ -165,7 +215,7 @@
       <button
         class="carousel-control-next"
         type="button"
-        data-bs-target="#testimonialCarousel"
+        data-bs-target="#carouselTestimonials"
         data-bs-slide="next"
       >
         <span
@@ -176,24 +226,184 @@
   </div>
 </section>
 
-<!-- CALL TO ACTION -->
-<section class="cta-section text-white text-center py-5">
-  <div class="container">
-    <h2 class="fw-bold mb-3">Join the Digital Hostel Revolution</h2>
+<!-- ========================= CTA SECTION ========================= -->
+<section class="cta-section text-center text-white py-5">
+  <div class="container animate__animated animate__fadeInUp">
+    <h2 class="fw-bold mb-3">Join Bihar’s Digital Hostel Revolution</h2>
     <p class="lead mb-4 opacity-90">
-      Manage your entire hostel life in one dashboard — simple, secure, and
-      transparent.
+      Empowering every Polytechnic student with a smarter, safer, and more
+      transparent hostel experience.
     </p>
     <a
       href="/register"
-      class="btn btn-light btn-lg rounded-pill px-5 fw-semibold shadow pulse-btn"
+      class="btn btn-light btn-lg rounded-pill px-5 fw-semibold shadow"
     >
-      <i class="bi bi-rocket-takeoff me-2"></i> Get Started Now
+      <i class="bi bi-rocket-takeoff me-2"></i> Register Now
     </a>
   </div>
 </section>
 
-<!-- PARTICLES ANIMATION -->
+<!-- ========================= STYLES ========================= -->
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: #f9fbff;
+    overflow-x: hidden;
+  }
+
+  /* ========================= ULTRA HERO ========================= */
+  .hero-section {
+    position: relative;
+    min-height: 100vh;
+    color: #fff;
+    background: linear-gradient(135deg, #007bff, #6610f2, #00c6ff);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+    overflow: hidden;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .hero-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: 0;
+    animation: gridMove 40s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% {
+      background-position: 0 0, 0 0;
+    }
+    100% {
+      background-position: 80px 80px, 80px 80px;
+    }
+  }
+
+  .glass-hero {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+  }
+
+  .glass-hero:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #00e1ff, #5b8cff, #9f6bff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGlow 5s ease infinite;
+  }
+
+  @keyframes textGlow {
+    0%,
+    100% {
+      text-shadow: 0 0 20px rgba(0, 136, 255, 0.4);
+    }
+    50% {
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .btn-glow {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 140, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 140, 255, 0.6);
+  }
+
+  #heroParticles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.7;
+  }
+
+  .notice-bar {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+  }
+  .bg-gradient-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+  }
+  .bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #ff8c00);
+  }
+
+  .shadow-glass {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .shadow-glass:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .cta-section {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+  }
+
+  @media (max-width: 768px) {
+    .glass-hero {
+      padding: 2rem;
+    }
+    .hero-heading {
+      font-size: 2rem;
+    }
+    .btn-lg {
+      width: 100%;
+    }
+  }
+</style>
+
+<!-- ========================= PARTICLES SCRIPT ========================= -->
 <script>
   const canvas = document.getElementById("heroParticles");
   const ctx = canvas.getContext("2d");
@@ -247,148 +457,3 @@
   init();
   animate();
 </script>
-
-<!-- STYLES -->
-<style>
-  /* ===== HERO SECTION ===== */
-  .hero-section {
-    background: linear-gradient(115deg, #4e00c2, #007bff, #00c6ff);
-    background-size: 400% 400%;
-    animation: gradientFlow 12s ease infinite;
-    min-height: 90vh;
-  }
-
-  @keyframes gradientFlow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.15),
-      rgba(0, 0, 0, 0.55)
-    );
-    backdrop-filter: blur(12px);
-  }
-
-  #heroParticles {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .animated-gradient-text {
-    background: linear-gradient(90deg, #ffffff, #a1dfff, #d0a1ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: textSlide 6s linear infinite;
-  }
-
-  @keyframes textSlide {
-    0% {
-      background-position: 0% center;
-    }
-    100% {
-      background-position: 200% center;
-    }
-  }
-
-  .hero-img {
-    max-height: 420px;
-    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
-    transition: transform 0.6s ease;
-  }
-  .hero-img:hover {
-    transform: scale(1.05);
-  }
-
-  /* ===== BUTTONS ===== */
-  .hero-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.5);
-  }
-
-  .hero-btn-alt:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .btn-gradient {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    transition: all 0.3s ease;
-  }
-  .btn-gradient:hover {
-    background: linear-gradient(135deg, #007bff, #004dcc);
-  }
-
-  /* ===== FEATURES ===== */
-  .feature-card {
-    border-radius: 18px;
-    background: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  .border-gradient {
-    border-top: 4px solid transparent;
-    border-image: linear-gradient(90deg, #007bff, #6610f2) 1;
-  }
-
-  /* ===== TESTIMONIALS ===== */
-  .testimonial-card {
-    max-width: 600px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border: 2px solid rgba(0, 123, 255, 0.2);
-  }
-
-  /* ===== CTA SECTION ===== */
-  .cta-section {
-    background: linear-gradient(135deg, #007bff, #6610f2, #00c6ff);
-    background-size: 200% 200%;
-    animation: gradientFlow 10s ease infinite;
-  }
-
-  .pulse-btn {
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
-    }
-    70% {
-      box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .hero-section {
-      text-align: center;
-    }
-    .hero-img {
-      margin-top: 2rem;
-      max-height: 300px;
-    }
-    .btn-lg {
-      width: 100%;
-    }
-  }
-</style>

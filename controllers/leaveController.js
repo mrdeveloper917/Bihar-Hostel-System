@@ -1,6 +1,7 @@
 import Leave from "../models/leave.js";
 import Student from "../models/student.js";
 import Notice from "../models/noticeModel.js";
+import { sendEmail } from "../utils/mailer.js";
 
 // 📄 GET LEAVES PAGE
 export const getLeaves = async (req, res) => {
@@ -68,4 +69,20 @@ export const cancelLeave = async (req, res) => {
     console.error("❌ Error canceling leave:", error);
     res.status(500).render("pages/error500", { title: "Server Error", error });
   }
+};
+
+
+export const approveLeave = async (req, res) => {
+  const leave = await Leave.findById(req.params.id).populate("student");
+  leave.status = "Approved";
+  await leave.save();
+
+  await sendEmail(
+    leave.student.user.email,
+    "Your Leave Request Approved",
+    `<p>Dear ${leave.student.user.name}, your leave request has been approved.</p>`
+  );
+
+  req.flash("success", "Leave approved and email sent!");
+  res.redirect("/admin/leaves");
 };
