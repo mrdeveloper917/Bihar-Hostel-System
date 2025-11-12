@@ -38,6 +38,8 @@ const __dirname = path.resolve();
 // =========================
 // 🗄️ MongoDB Connection
 // =========================
+const MONGO = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/bihar_hostel";
+
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO, {
