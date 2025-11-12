@@ -38,11 +38,21 @@ const __dirname = path.resolve();
 // =========================
 // 🗄️ MongoDB Connection
 // =========================
-const MONGO = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/bihar_hostel";
-mongoose
-  .connect(MONGO)
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGO, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB connected successfully");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    console.log("🔁 Retrying in 5 seconds...");
+    setTimeout(connectDB, 5000);
+  }
+};
+
+connectDB();
 
 // =========================
 // ⚙️ Middlewares
