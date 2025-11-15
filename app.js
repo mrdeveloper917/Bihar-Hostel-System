@@ -125,7 +125,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
+app.set("trust proxy", 1);
 
 
 // =========================
@@ -137,9 +137,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      sameSite: "lax",
+      secure: true,   // << must be true on Render
+      sameSite: "none",
+      // maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
   })
 );
