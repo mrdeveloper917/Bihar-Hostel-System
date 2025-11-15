@@ -126,7 +126,7 @@ const __filename = fileURLToPath(import.meta.url);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.set("trust proxy", 1);
-
+const isProduction = process.env.NODE_ENV === "production";
 
 // =========================
 // 💾 Sessions & Flash
@@ -135,11 +135,12 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || "biharhostelsecret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-      secure: true,   // << must be true on Render
-      sameSite: "none",
-      // maxAge: 24 * 60 * 60 * 1000, // 1 day
+      secure: isProduction ? true : false,      
+      sameSite: isProduction ? "none" : "lax",  
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
