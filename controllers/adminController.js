@@ -18,6 +18,7 @@ export const getAdminDashboard = async (req, res) => {
     const totalRooms = await Room.countDocuments();
     const occupiedRooms = await Room.countDocuments({ isOccupied: true });
     const vacantRooms = totalRooms - occupiedRooms;
+    const rooms = await Room.find(); 
 
     const pendingComplaints = await Complaint.countDocuments({
       status: "open",
@@ -90,11 +91,13 @@ export const getAdminDashboard = async (req, res) => {
       pendingLeaves,
       totalNotices,
       recentVisitors,
+      rooms,
 
       // ✅ ADDED VALUES
       totalMaintenance,
       pendingMaintenance,
       recentMaintenance,
+      getBookings,
     });
   } catch (err) {
     console.error("❌ Error loading admin dashboard:", err);
@@ -258,39 +261,18 @@ export const getRooms = async (req, res) => {
 // ➕ Add Room
 export const addRoom = async (req, res) => {
   try {
-    const { roomNumber, hostelName, capacity, gender, batchYear } = req.body;
-
-    if (!roomNumber || !hostelName || !gender || !batchYear) {
-      req.flash(
-        "error",
-        "All fields are required — Room No, Hostel, Gender, and Batch Year!"
-      );
-      return res.redirect("/admin/rooms");
-    }
-
-    const existing = await Room.findOne({ roomNumber });
-    if (existing) {
-      req.flash("error", `Room ${roomNumber} already exists!`);
-      return res.redirect("/admin/rooms");
-    }
+    const { hostelName, roomNumber, capacity } = req.body;
 
     await Room.create({
-      roomNumber,
       hostelName,
+      roomNumber,
       capacity,
-      gender,
-      batchYear,
-      isOccupied: false,
-      occupants: [],
-      status: "vacant",
     });
 
-    req.flash("success", `Room ${roomNumber} added successfully!`);
     res.redirect("/admin/rooms");
-  } catch (err) {
-    console.error("❌ Error adding room:", err);
-    req.flash("error", "Failed to add room. Please try again.");
-    res.redirect("/admin/rooms");
+  } catch (error) {
+    console.error("Error adding room:", error);
+    res.status(500).send("Failed to add room");
   }
 };
 
@@ -410,15 +392,36 @@ export const getRoomDashboard = async (req, res) => {
 ================================*/
 export const getBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find().populate("student").lean();
+    const bookings = await Booking.find()
+      .populate("student")
+      .populate("room")
+      .lean();
+
+    const totalBookings = bookings.length;
+    const approvedBookings = bookings.filter(
+      (b) => b.status === "approved"
+    ).length;
+    const pendingBookings = bookings.filter(
+      (b) => b.status === "pending"
+    ).length;
+    const rejectedBookings = bookings.filter(
+      (b) => b.status === "rejected"
+    ).length;
+
     res.render("admin/bookings", {
       title: "Manage Bookings",
-      bookings,
       user: req.session.user,
+
+      bookings,
+
+      totalBookings,
+      approvedBookings,
+      pendingBookings,
+      rejectedBookings,
     });
-  } catch (err) {
-    console.error("🔥 Error loading bookings:", err);
-    res.status(500).render("pages/error500", { error: err });
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+    res.status(500).render("pages/error500", { title: "Error", error });
   }
 };
 

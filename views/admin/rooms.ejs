@@ -1,98 +1,133 @@
 <% title = "Manage Rooms" %>
 
-<section class="container my-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-gradient">🏠 Manage Rooms</h2>
-    <button
-      class="btn btn-primary rounded-pill shadow-sm"
-      data-bs-toggle="modal"
-      data-bs-target="#addRoomModal"
-    >
-      <i class="bi bi-plus-lg me-1"></i> Add Room
-    </button>
+<section class="container my-5 animate__animated animate__fadeIn">
+  <!-- 🌟 HEADER -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-5">
+    <div>
+      <h2 class="fw-bold text-gradient mb-1">🏠 Manage Rooms</h2>
+      <p class="text-muted small">
+        Add, update and manage all hostel rooms with a clean dashboard
+        experience.
+      </p>
+    </div>
+
+    <div class="d-flex gap-2 mt-3 mt-md-0">
+      <!-- 🔗 Room Dashboard -->
+      <a
+        href="/admin/rooms/dashboard"
+        class="btn btn-dark rounded-pill shadow-sm px-4 d-flex align-items-center gap-2"
+      >
+        <i class="bi bi-speedometer2"></i>
+        <span>Room Dashboard</span>
+      </a>
+
+      <!-- ➕ Add Room -->
+      <button
+        class="btn btn-gradient rounded-pill shadow-sm px-4"
+        data-bs-toggle="modal"
+        data-bs-target="#addRoomModal"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Add Room
+      </button>
+    </div>
   </div>
 
-  <div class="card shadow-sm border-0 rounded-3">
-    <div class="card-body">
-      <% if (rooms.length > 0) { %>
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>#</th>
-              <th>Hostel</th>
-              <th>Room No</th>
-              <th>Capacity</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% rooms.forEach((room, i) => { %>
-            <tr>
-              <td><%= i + 1 %></td>
-              <td><%= room.hostelName %></td>
-              <td><%= room.roomNumber %></td>
-              <td><%= room.capacity %></td>
-              <td>
-                <span
-                  class="badge bg-<%= room.isOccupied ? 'danger' : 'success' %>"
-                >
-                  <%= room.isOccupied ? 'Occupied' : 'Vacant' %>
-                </span>
-              </td>
-              <td>
-                <form
-                  action="/admin/rooms/<%= room._id %>/toggle"
-                  method="POST"
-                  class="d-inline"
-                >
-                  <button
-                    class="btn btn-sm btn-outline-primary rounded-pill"
-                    type="submit"
-                  >
-                    <i class="bi bi-arrow-repeat me-1"></i> Toggle
-                  </button>
-                </form>
-                <form
-                  action="/admin/rooms/<%= room._id %>/delete"
-                  method="POST"
-                  class="d-inline ms-1"
-                  onsubmit="return confirm('Are you sure you want to delete this room?');"
-                >
-                  <button class="btn btn-sm btn-outline-danger rounded-pill">
-                    <i class="bi bi-trash3 me-1"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-      <% } else { %>
-      <div class="text-center text-muted py-5">
-        <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
-        No rooms available yet. Add one above.
-      </div>
-      <% } %>
+  <!-- 📦 ROOMS TABLE CARD -->
+  <div class="glass-card shadow-lg p-4 rounded-4">
+    <% if (rooms.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table align-middle table-hover">
+        <thead class="table-header rounded-3">
+          <tr>
+            <th>#</th>
+            <th>Hostel</th>
+            <th>Room</th>
+            <th>Capacity</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% rooms.forEach((room, i) => { %>
+          <tr class="row-hover">
+            <td class="fw-semibold"><%= i + 1 %></td>
+
+            <td class="fw-semibold">
+              <i class="bi bi-building text-primary me-1"></i> <%=
+              room.hostelName %>
+            </td>
+
+            <td>
+              <span class="room-tag">
+                <i class="bi bi-door-open"></i> <%= room.roomNumber %>
+              </span>
+            </td>
+
+            <td><%= room.capacity %> Beds</td>
+
+            <td>
+              <span
+                class="status-pill <%= room.isOccupied ? 'pill-red' : 'pill-green' %>"
+              >
+                <%= room.isOccupied ? 'Occupied' : 'Vacant' %>
+              </span>
+            </td>
+
+            <td class="text-center">
+              <form
+                action="/admin/rooms/<%= room._id %>/toggle"
+                class="d-inline"
+                method="POST"
+              >
+                <button class="icon-btn blue" title="Toggle Room Status">
+                  <i class="bi bi-arrow-repeat"></i>
+                </button>
+              </form>
+
+              <form
+                action="/admin/rooms/<%= room._id %>/delete"
+                class="d-inline"
+                onsubmit="return confirm('Delete this room?')"
+                method="POST"
+              >
+                <button class="icon-btn red ms-1" title="Delete Room">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </div>
+
+    <% } else { %>
+
+    <!-- ❌ EMPTY STATE -->
+    <div class="text-center py-5">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/7486/7486775.png"
+        width="140"
+        class="mb-3 opacity-75"
+      />
+      <h5 class="fw-semibold">No Rooms Added Yet</h5>
+      <p class="text-muted small">
+        Click “Add Room” to create your first room.
+      </p>
+    </div>
+
+    <% } %>
   </div>
 </section>
 
-<!-- ADD ROOM MODAL -->
-<div
-  class="modal fade"
-  id="addRoomModal"
-  tabindex="-1"
-  aria-labelledby="addRoomModalLabel"
-  aria-hidden="true"
->
+<!-- 🏠 ADD ROOM MODAL -->
+<div class="modal fade" id="addRoomModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title fw-semibold" id="addRoomModalLabel">
-          <i class="bi bi-door-open me-2"></i> Add New Room
+      <div class="modal-header modal-gradient text-white py-3">
+        <h5 class="modal-title fw-semibold">
+          <i class="bi bi-door-open me-2"></i>Add New Room
         </h5>
         <button
           type="button"
@@ -100,6 +135,7 @@
           data-bs-dismiss="modal"
         ></button>
       </div>
+
       <form method="POST" action="/admin/rooms/add">
         <div class="modal-body">
           <div class="mb-3">
@@ -107,34 +143,37 @@
             <input
               type="text"
               name="hostelName"
-              class="form-control"
-              placeholder="Enter hostel name"
+              class="form-control rounded-pill"
+              placeholder="e.g., Ganga Hostel"
               required
             />
           </div>
+
           <div class="mb-3">
             <label class="form-label fw-semibold">Room Number</label>
             <input
               type="text"
               name="roomNumber"
-              class="form-control"
-              placeholder="Enter room number"
+              class="form-control rounded-pill"
+              placeholder="e.g., 105"
               required
             />
           </div>
+
           <div class="mb-3">
             <label class="form-label fw-semibold">Capacity</label>
             <input
               type="number"
               name="capacity"
-              class="form-control"
               min="1"
               placeholder="e.g., 3"
+              class="form-control rounded-pill"
               required
             />
           </div>
         </div>
-        <div class="modal-footer">
+
+        <div class="modal-footer border-0">
           <button
             type="button"
             class="btn btn-outline-secondary rounded-pill"
@@ -142,7 +181,7 @@
           >
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary rounded-pill px-4">
+          <button type="submit" class="btn btn-gradient rounded-pill px-4">
             Add Room
           </button>
         </div>
@@ -151,21 +190,86 @@
   </div>
 </div>
 
+<!-- 🎨 STYLES -->
 <style>
+  body {
+    font-family: "Poppins", sans-serif;
+  }
+
+  /* 🌈 Gradient Text */
   .text-gradient {
     background: linear-gradient(90deg, #007bff, #6610f2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  .btn-outline-primary:hover {
-    background: #007bff;
-    color: #fff;
-  }
-  .btn-outline-danger:hover {
-    background: #dc3545;
-    color: #fff;
-  }
-  .modal-content {
+
+  /* 🧊 Glass Card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
     border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  /* 🚪 Room Tag */
+  .room-tag {
+    background: #eef4ff;
+    color: #003b88;
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  /* 📛 Status Pills */
+  .status-pill {
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  .pill-green {
+    background: #28a745;
+    color: white;
+  }
+  .pill-red {
+    background: #dc3545;
+    color: white;
+  }
+
+  /* 🎛 Table Header */
+  .table-header {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: white;
+    font-size: 0.85rem;
+  }
+
+  /* 🌈 Row Hover */
+  .row-hover:hover {
+    background: rgba(0, 123, 255, 0.06);
+    transition: 0.2s ease;
+  }
+
+  /* 🎯 Action Buttons */
+  .icon-btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    color: white;
+    transition: 0.2s;
+  }
+  .icon-btn.blue {
+    background: #007bff;
+  }
+  .icon-btn.red {
+    background: #dc3545;
+  }
+  .icon-btn:hover {
+    transform: scale(1.15);
+  }
+
+  /* Modal Header */
+  .modal-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
   }
 </style>

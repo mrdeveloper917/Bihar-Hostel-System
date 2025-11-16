@@ -1,124 +1,168 @@
 <% title = "My Visitors" %>
 
 <section class="container py-5 animate__animated animate__fadeIn">
-  <!-- 🌟 Header -->
+  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
     <div>
       <h2 class="fw-bold text-gradient mb-1">👥 My Visitor Log</h2>
       <p class="text-muted small mb-0">
-        Submit and track your visitor entry requests with timing details.
+        Add visitor requests, check approval status & view recent history.
       </p>
     </div>
 
     <button
-      class="btn btn-gradient rounded-pill shadow-sm"
+      class="btn btn-gradient rounded-pill shadow-sm px-4"
       onclick="document.getElementById('addVisitorForm').scrollIntoView({ behavior: 'smooth' })"
     >
-      <i class="bi bi-plus-circle me-1"></i> Add Visitor
+      <i class="bi bi-person-plus me-1"></i> Add Visitor
     </button>
   </div>
 
-  <!-- 📝 Add Visitor Form -->
-  <div
-    id="addVisitorForm"
-    class="glass-card form-section shadow-sm rounded-4 p-4 mb-5"
-  >
+  <!-- Add Visitor Form -->
+  <div id="addVisitorForm" class="glass-card shadow-sm rounded-4 p-4 mb-5">
     <h5 class="fw-semibold mb-3 text-primary">
-      <i class="bi bi-person-plus me-2"></i>Add New Visitor
+      <i class="bi bi-person-plus me-2"></i>Add New Visitor Request
     </h5>
-    <form action="/student/visitors/add" method="POST" class="row g-3">
+
+    <!-- FORM: uses simple date + time inputs. JS combines them into hidden inTime/outTime ISO fields -->
+    <form
+      id="visitorForm"
+      action="/student/visitors/add"
+      method="POST"
+      class="row g-3"
+    >
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Visitor Name</label>
+        <input
+          type="text"
+          name="name"
+          class="form-control rounded-pill"
+          placeholder="e.g. Rahul Kumar"
+          required
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Contact Number</label>
+        <input
+          type="tel"
+          name="contact"
+          class="form-control rounded-pill"
+          placeholder="9876543210"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Purpose</label>
+        <input
+          type="text"
+          name="purpose"
+          class="form-control rounded-pill"
+          placeholder="e.g. Delivery, Visit"
+          required
+        />
+      </div>
+
+      <!-- Simple time inputs: Date + Time separate -->
       <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-text bg-light"
-            ><i class="bi bi-person"></i
-          ></span>
-          <input
-            type="text"
-            name="name"
-            class="form-control"
-            placeholder="Visitor Name"
-            required
-          />
-        </div>
+        <label class="form-label fw-semibold">In Date</label>
+        <input
+          type="date"
+          id="inDate"
+          class="form-control rounded-pill"
+          required
+        />
       </div>
 
       <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-text bg-light"
-            ><i class="bi bi-telephone"></i
-          ></span>
-          <input
-            type="text"
-            name="contact"
-            class="form-control"
-            placeholder="Contact (Optional)"
-          />
-        </div>
+        <label class="form-label fw-semibold">In Time</label>
+        <input
+          type="time"
+          id="inTime"
+          class="form-control rounded-pill"
+          required
+        />
       </div>
 
       <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-text bg-light"
-            ><i class="bi bi-clipboard-check"></i
-          ></span>
-          <input
-            type="text"
-            name="purpose"
-            class="form-control"
-            placeholder="Purpose of Visit"
-            required
-          />
-        </div>
+        <label class="form-label fw-semibold">Out Date</label>
+        <input type="date" id="outDate" class="form-control rounded-pill" />
       </div>
 
       <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-text bg-light"
-            ><i class="bi bi-clock"></i
-          ></span>
-          <input
-            type="datetime-local"
-            name="inTime"
-            class="form-control"
-            required
-          />
-        </div>
+        <label class="form-label fw-semibold">Out Time</label>
+        <input type="time" id="outTime" class="form-control rounded-pill" />
       </div>
 
-      <div class="col-md-3">
-        <div class="input-group">
-          <span class="input-group-text bg-light"
-            ><i class="bi bi-clock-history"></i
-          ></span>
-          <input type="datetime-local" name="outTime" class="form-control" />
-        </div>
-      </div>
+      <!-- Hidden inputs that backend expects: inTime & outTime in ISO format -->
+      <input type="hidden" name="inTime" id="inTimeHidden" />
+      <input type="hidden" name="outTime" id="outTimeHidden" />
 
-      <div class="col-md-12 d-flex justify-content-end">
-        <button class="btn btn-gradient rounded-pill px-4">
-          <i class="bi bi-send me-1"></i>Submit
+      <div class="col-12 d-flex justify-content-end mt-2">
+        <button type="submit" class="btn btn-gradient rounded-pill px-4">
+          <i class="bi bi-send-check me-1"></i>Submit Request
         </button>
       </div>
     </form>
   </div>
 
-  <!-- 📋 Visitor Log Table -->
-  <% if (visitors.length === 0) { %>
-  <div class="empty-state text-center py-5 glass-card shadow-sm">
+  <!-- Visitor Summary Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div
+        class="summary-card text-center shadow-sm p-4 bg-success text-white rounded-4"
+      >
+        <i class="bi bi-person-check fs-2"></i>
+        <h6 class="mt-2">Approved</h6>
+        <h2>
+          <%= (visitors || []).filter(v => v.status === 'Approved').length %>
+        </h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div
+        class="summary-card text-center shadow-sm p-4 bg-warning text-dark rounded-4"
+      >
+        <i class="bi bi-hourglass-split fs-2"></i>
+        <h6 class="mt-2">Pending</h6>
+        <h2>
+          <%= (visitors || []).filter(v => v.status === 'Pending').length %>
+        </h2>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div
+        class="summary-card text-center shadow-sm p-4 bg-secondary text-white rounded-4"
+      >
+        <i class="bi bi-door-open fs-2"></i>
+        <h6 class="mt-2">Checked-Out</h6>
+        <h2>
+          <%= (visitors || []).filter(v => v.status === 'Checked-Out').length %>
+        </h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visitor Log Table -->
+  <% if (!visitors || visitors.length === 0) { %>
+  <div class="empty-state text-center py-5 glass-card">
     <img
       src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
       width="130"
-      class="mb-3"
-      alt="No Visitors"
     />
-    <h5 class="fw-semibold mb-2 text-muted">No Visitors Yet</h5>
-    <p class="text-secondary small">
-      Your visitor requests will appear here once added.
-    </p>
+    <h5 class="fw-semibold mt-3 text-muted">No Visitor Records Found</h5>
+    <p class="text-muted small mb-0">Add visitors using the form above.</p>
   </div>
   <% } else { %>
-  <div class="table-responsive glass-card shadow-lg p-4 rounded-4">
-    <table class="table table-borderless align-middle">
+
+  <div class="table-responsive glass-card shadow-lg p-4 rounded-4 mb-4">
+    <h5 class="fw-bold mb-3 text-gradient">
+      <i class="bi bi-list-check me-2"></i>Visitor Log
+    </h5>
+
+    <table class="table align-middle table-hover">
       <thead class="table-header">
         <tr>
           <th>Visitor</th>
@@ -128,16 +172,19 @@
           <th>Status</th>
         </tr>
       </thead>
+
       <tbody>
         <% visitors.forEach(v => { %>
-        <tr class="visitor-row">
-          <td class="fw-semibold"><%= v.name %></td>
+        <tr>
+          <td class="fw-semibold">
+            <i class="bi bi-person-circle me-1"></i><%= v.name %>
+          </td>
           <td><%= v.purpose %></td>
-          <td><%= new Date(v.inTime).toLocaleString() %></td>
+          <td><%= v.inTime ? new Date(v.inTime).toLocaleString() : '-' %></td>
           <td><%= v.outTime ? new Date(v.outTime).toLocaleString() : '-' %></td>
           <td>
             <span
-              class="status-badge <%= v.status === 'Approved' ? 'status-approved' : v.status === 'Checked-Out' ? 'status-checkedout' : 'status-pending' %>"
+              class="badge rounded-pill px-3 py-2 <%= v.status === 'Approved' ? 'bg-success' : v.status === 'Checked-Out' ? 'bg-secondary' : 'bg-warning text-dark' %>"
             >
               <%= v.status %>
             </span>
@@ -147,117 +194,100 @@
       </tbody>
     </table>
   </div>
+
   <% } %>
+
+  <!-- Recent History (latest 5) -->
+  <div class="glass-card p-4 rounded-4 shadow-sm">
+    <h5 class="fw-bold text-gradient mb-3">
+      <i class="bi bi-clock-history me-2"></i>Recent Visitor History
+    </h5>
+
+    <% const history = (visitors || []).slice(0, 5); %> <% if (history.length
+    === 0) { %>
+    <p class="text-muted">No recent visitors.</p>
+    <% } else { %>
+    <ul class="list-group list-group-flush">
+      <% history.forEach(h => { %>
+      <li class="list-group-item bg-transparent">
+        <i class="bi bi-clock me-2 text-primary"></i>
+        <strong><%= h.name %></strong> — <%= h.purpose %>
+        <span class="text-muted"
+          >(<%= h.inTime ? new Date(h.inTime).toLocaleString() : '-' %>)</span
+        >
+      </li>
+      <% }) %>
+    </ul>
+    <% } %>
+  </div>
 </section>
 
-<!-- 🎨 Styles -->
+<!-- Styles -->
 <style>
-  body {
-    background: radial-gradient(circle at top left, #eef2ff, #f9fbff);
-    font-family: "Poppins", sans-serif;
-    color: #2c3e50;
-  }
-
-  /* 🌈 Gradient Text */
   .text-gradient {
     background: linear-gradient(90deg, #007bff, #6610f2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* 🌟 Glass Card */
   .glass-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(12px);
+    border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    transition: all 0.3s ease;
-  }
-  .glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
   }
 
-  /* 🌈 Gradient Button */
   .btn-gradient {
     background: linear-gradient(90deg, #007bff, #00bfff);
     color: #fff;
-    border: none;
-    transition: all 0.3s ease;
-  }
-  .btn-gradient:hover {
-    background: linear-gradient(90deg, #0069d9, #0099cc);
-    transform: translateY(-2px);
-    box-shadow: 0 0 12px rgba(0, 191, 255, 0.3);
   }
 
-  /* 🧾 Table */
   .table-header {
     background: linear-gradient(90deg, #007bff, #00bfff);
     color: white;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    border-radius: 10px;
-  }
-  .table td {
-    vertical-align: middle;
-    font-size: 0.9rem;
-  }
-  .visitor-row:hover {
-    background: rgba(0, 123, 255, 0.05);
-    transition: 0.3s ease;
   }
 
-  /* 🟢 Status Badges */
-  .status-badge {
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-  .status-approved {
-    background: linear-gradient(90deg, #00c851, #28a745);
-    color: white;
-  }
-  .status-pending {
-    background: linear-gradient(90deg, #ffc107, #ff9f43);
-    color: #212529;
-  }
-  .status-checkedout {
-    background: linear-gradient(90deg, #6c757d, #adb5bd);
-    color: white;
+  .summary-card {
+    border-radius: 16px;
   }
 
-  /* ✨ Empty State */
-  .empty-state img {
-    opacity: 0.9;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  /* 📱 Responsive */
   @media (max-width: 768px) {
-    .table td,
-    .table th {
-      font-size: 0.8rem;
-    }
-    .input-group-text {
-      display: none;
-    }
-    .btn-gradient {
-      width: 100%;
-    }
-    form .col-md-3 {
-      flex: 0 0 100%;
-      max-width: 100%;
+    .summary-card {
+      padding: 18px;
     }
   }
 </style>
+
+<!-- JS: combine date+time into ISO strings before submit -->
+<script>
+  document
+    .getElementById("visitorForm")
+    .addEventListener("submit", function (e) {
+      // combine inDate + inTime into ISO string for backend
+      const inDate = document.getElementById("inDate").value;
+      const inTime = document.getElementById("inTime").value;
+      const outDate = document.getElementById("outDate").value;
+      const outTime = document.getElementById("outTime").value;
+
+      // validate required inputs
+      if (!inDate || !inTime) {
+        e.preventDefault();
+        alert("Please select In date and time.");
+        return;
+      }
+
+      // Combine to "YYYY-MM-DDTHH:MM:SS" format (seconds optional). We'll add ":00"
+      const inIso = `${inDate}T${inTime}:00`;
+      document.getElementById("inTimeHidden").value = inIso;
+
+      if (outDate && outTime) {
+        const outIso = `${outDate}T${outTime}:00`;
+        document.getElementById("outTimeHidden").value = outIso;
+      } else {
+        // clear hidden outTime so backend can accept null/undefined
+        document.getElementById("outTimeHidden").value = "";
+      }
+
+      // form submits normally
+    });
+</script>

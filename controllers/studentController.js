@@ -18,16 +18,19 @@ export const getStudentDashboard = async (req, res) => {
       user: req.session.user._id,
     }).populate("user");
 
-    const maintenance = await Maintenance.find({ student: student._id })
-      .sort({ createdAt: -1 });
+    const maintenance = await Maintenance.find({ student: student._id }).sort({
+      createdAt: -1,
+    });
 
-    const visitors = await Visitor.find({ student: student._id })
-      .sort({ createdAt: -1 });
+    const visitors = await Visitor.find({ student: student._id }).sort({
+      createdAt: -1,
+    });
 
     const notices = await Notice.find().sort({ createdAt: -1 }).limit(5);
 
-    const leaves = await Leave.find({ student: student._id })
-      .sort({ createdAt: -1 });
+    const leaves = await Leave.find({ student: student._id }).sort({
+      createdAt: -1,
+    });
 
     res.render("dashboard/student_dashboard", {
       title: "Student Dashboard",
@@ -40,13 +43,11 @@ export const getStudentDashboard = async (req, res) => {
       approvedLeaves: 0,
       leaves,
     });
-
   } catch (err) {
     console.log(err);
     res.status(500).render("pages/error500");
   }
 };
-
 
 export const getPaymentHistory = async (req, res) => {
   try {
@@ -62,7 +63,6 @@ export const getPaymentHistory = async (req, res) => {
     res.status(500).render("pages/error500", { title: "Server Error" });
   }
 };
-
 
 /* ===========================================================
    👤 STUDENT PROFILE
@@ -205,12 +205,20 @@ export const getStudentVisitors = async (req, res) => {
 export const postVisitorRequest = async (req, res) => {
   try {
     const student = await Student.findOne({ user: req.session.user._id });
-    if (!student) {
-      req.flash("error", "Student profile not found!");
-      return res.redirect("/login");
+
+    let { name, contact, purpose, inTime, outTime } = req.body;
+
+    // FIX: Convert into proper date format manually
+    inTime = new Date(inTime);
+    outTime = outTime ? new Date(outTime) : null;
+
+    if (isNaN(inTime.getTime())) {
+      throw new Error("Invalid In Time format");
     }
 
-    const { name, contact, purpose, inTime, outTime } = req.body;
+    if (outTime && isNaN(outTime.getTime())) {
+      throw new Error("Invalid Out Time format");
+    }
 
     await Visitor.create({
       name,
@@ -226,6 +234,7 @@ export const postVisitorRequest = async (req, res) => {
     res.redirect("/student/visitors");
   } catch (error) {
     console.error("🔥 Error submitting visitor request:", error);
+
     req.flash("error", "Failed to submit visitor request.");
     res.redirect("/student/visitors");
   }
@@ -394,11 +403,8 @@ export const createOrder = async (req, res) => {
 
 export const verifyPayment = async (req, res) => {
   try {
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
-    } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
 
     // verify signature
     const body = razorpay_order_id + "|" + razorpay_payment_id;
@@ -443,7 +449,6 @@ export const verifyPayment = async (req, res) => {
       success: true,
       message: "Payment verified successfully!",
     });
-
   } catch (error) {
     console.error("❌ Error verifying payment:", error);
     res.status(500).json({ success: false });

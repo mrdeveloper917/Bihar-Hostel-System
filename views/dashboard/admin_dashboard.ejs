@@ -352,22 +352,28 @@
     background: radial-gradient(circle at top left, #eef3ff, #f8faff 70%);
     font-family: "Poppins", sans-serif;
   }
+
   .gradient-text {
-    background: linear-gradient(90deg, #007bff, #6610f2);
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
   .dashboard-header {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(230, 230, 230, 0.5);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(230, 230, 230, 0.4);
   }
+
   .date-pill {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     padding: 8px 16px;
     border-radius: 25px;
     font-weight: 500;
   }
+
+  /* ===== MODERN NEON GRADIENT CARD COLORS ===== */
+
   .stat-card {
     border-radius: 20px;
     padding: 1.4rem;
@@ -375,47 +381,65 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
-    transition: all 0.4s ease;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.18);
+    transition: all 0.35s ease;
   }
+
   .stat-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
   }
+
+  /* 🔵 Electric Blue → Purple */
   .stat-primary {
-    background: linear-gradient(135deg, #007bff, #5b4bff);
+    background: linear-gradient(135deg, #5b0fff, #4a00e0, #007bff);
   }
+
+  /* 🟢 Mint Neon → Emerald */
   .stat-success {
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: linear-gradient(135deg, #00e676, #00c853, #00bfa5);
   }
+
+  /* 🟠 Gold → Hot Orange */
   .stat-warning {
-    background: linear-gradient(135deg, #ffb400, #ff8c00);
+    background: linear-gradient(135deg, #ffb700, #ff8f00, #ff6d00);
   }
+
+  /* 🔹 Aqua Blue → Deep Hyper Blue */
   .stat-info {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #00e5ff, #0091ea, #2962ff);
   }
+
   .glass-card {
     background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     transition: 0.4s;
   }
+
   .glass-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
   }
+
+  /* Gradient headers now more vibrant */
   .gradient-primary {
-    background: linear-gradient(135deg, #007bff, #6610f2);
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
   }
+
   .gradient-success {
-    background: linear-gradient(135deg, #28a745, #20c997);
+    background: linear-gradient(135deg, #00c853, #64dd17);
   }
+
   .gradient-info {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #00b4db, #0083b0);
   }
+
   .gradient-danger {
-    background: linear-gradient(135deg, #ff5c75, #dc3545);
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
   }
+
   .gradient-warning {
-    background: linear-gradient(135deg, #ffc107, #ff8c00);
+    background: linear-gradient(135deg, #ffb300, #ff6f00);
   }
 </style>

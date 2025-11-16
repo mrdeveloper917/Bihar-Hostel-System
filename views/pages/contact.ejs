@@ -1,4 +1,4 @@
-<% title = "Contact Us | Bihar Polytechnic Hostel Management System" %>
+<% title = "Contact Us | Bihar Polytechnic Hostel Management System"; %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,15 +77,16 @@
         font-size: 1.1rem;
       }
 
+      /* SAFE ENCODED WAVE */
       .wave {
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
         height: 80px;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="1" d="M0,224L60,197.3C120,171,240,117,360,122.7C480,128,600,192,720,208C840,224,960,192,1080,170.7C1200,149,1320,139,1380,133.3L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>');
-        background-repeat: no-repeat;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' d='M0,224L60,197.3C120,171,240,117,360,122.7C480,128,600,192,720,208C840,224,960,192,1080,170.7C1200,149,1320,139,1380,133.3L1440,128L1440,320H0Z'/%3E%3C/svg%3E");
         background-size: cover;
+        background-repeat: no-repeat;
       }
 
       /* CONTACT SECTION */
@@ -115,7 +116,6 @@
 
       .contact-image {
         background: url("/img/contact-bg.jpg") center/cover no-repeat;
-
         min-height: 100%;
         border-radius: 0 18px 18px 0;
       }
@@ -145,16 +145,26 @@
         box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
       }
 
-      .office-info i {
-        color: var(--primary);
-        margin-right: 8px;
+      /* MODERN STATIC MAP CARD (NO IFRAME) */
+      .map-card {
+        background: url("https://maps.googleapis.com/maps/api/staticmap?center=Patna+Polytechnic&zoom=14&size=600x300&key=YOUR_API_KEY")
+          center/cover no-repeat;
+        height: 260px;
+        border-radius: 15px;
+        position: relative;
       }
 
-      iframe {
-        border-radius: 15px;
-        margin-top: 15px;
-        width: 100%;
-        height: 260px;
+      .map-overlay {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.85);
+        padding: 8px 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--primary);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
       }
 
       /* Animation */
@@ -179,9 +189,6 @@
         .contact-hero h1 {
           font-size: 2.2rem;
         }
-        iframe {
-          height: 200px;
-        }
       }
     </style>
   </head>
@@ -192,8 +199,8 @@
       <div class="container">
         <h1 data-animate>Contact Us</h1>
         <p class="mt-3" data-animate>
-          Have questions, suggestions, or need support? Our team is always ready
-          to assist you.
+          Have questions, suggestions, or need support? Our team is ready to
+          help anytime.
         </p>
       </div>
       <div class="wave"></div>
@@ -203,7 +210,7 @@
     <section class="contact-section">
       <div class="container">
         <div class="row g-4 align-items-stretch">
-          <!-- Glass Card with Image -->
+          <!-- Form Section -->
           <div class="col-lg-7" data-animate>
             <div class="glass-card d-flex flex-lg-row flex-column shadow-sm">
               <div class="form-container flex-grow-1">
@@ -222,11 +229,9 @@
                       name="name"
                       id="name"
                       class="form-control"
-                      placeholder="Your Name"
                       required
                     />
                     <label for="name">Your Name</label>
-                    <div class="invalid-feedback">Please enter your name</div>
                   </div>
 
                   <div class="form-floating mb-3">
@@ -235,13 +240,9 @@
                       name="email"
                       id="email"
                       class="form-control"
-                      placeholder="you@example.com"
                       required
                     />
-                    <label for="email">Email address</label>
-                    <div class="invalid-feedback">
-                      Please enter a valid email
-                    </div>
+                    <label for="email">Email Address</label>
                   </div>
 
                   <div class="form-floating mb-3">
@@ -249,14 +250,10 @@
                       name="message"
                       id="message"
                       class="form-control"
-                      placeholder="Write your message..."
                       style="height: 130px"
                       required
                     ></textarea>
                     <label for="message">Your Message</label>
-                    <div class="invalid-feedback">
-                      Please enter your message
-                    </div>
                   </div>
 
                   <div class="d-grid">
@@ -270,7 +267,6 @@
                 </form>
               </div>
 
-              <!-- Image side -->
               <div class="contact-image d-none d-lg-block"></div>
             </div>
           </div>
@@ -281,21 +277,29 @@
               <h5 class="fw-bold text-success mb-3">
                 <i class="bi bi-building me-2"></i> Our Office
               </h5>
-              <p class="text-muted mb-2 office-info">
+
+              <p class="text-muted mb-2">
                 Bihar Polytechnic College<br />
                 123 Hostel Lane, Patna, Bihar - 800001
               </p>
-              <p class="text-muted mb-1 office-info">
+
+              <p class="text-muted mb-1">
                 <i class="bi bi-envelope"></i> support@biharhostel.local
               </p>
-              <p class="text-muted office-info">
+              <p class="text-muted">
                 <i class="bi bi-telephone"></i> +91 98765 43210
               </p>
-              <iframe
-                loading="lazy"
-                allowfullscreen
-                src="https://www.google.com/maps?q=patna+polytechnic&output=embed"
-              ></iframe>
+
+              <!-- No iframe → Static Map Preview -->
+              <a
+                href="https://www.google.com/maps?q=patna+polytechnic"
+                target="_blank"
+                class="map-card d-block mt-3 position-relative"
+              >
+                <div class="map-overlay">
+                  <i class="bi bi-geo-alt-fill"></i> View on Google Maps
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -304,38 +308,34 @@
 
     <!-- Scripts -->
     <script>
+      // Bootstrap validation
       (() => {
-        "use strict";
         const forms = document.querySelectorAll(".needs-validation");
-        Array.from(forms).forEach((form) => {
-          form.addEventListener(
-            "submit",
-            (event) => {
-              if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-              form.classList.add("was-validated");
-            },
-            false
-          );
+        forms.forEach((form) => {
+          form.addEventListener("submit", (event) => {
+            if (!form.checkValidity()) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add("was-validated");
+          });
         });
       })();
 
       // Scroll Animation
-      const animatedEls = document.querySelectorAll("[data-animate]");
+      const animated = document.querySelectorAll("[data-animate]");
       const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              observer.unobserve(entry.target);
+        (e, o) => {
+          e.forEach((x) => {
+            if (x.isIntersecting) {
+              x.target.classList.add("visible");
+              o.unobserve(x.target);
             }
           });
         },
         { threshold: 0.15 }
       );
-      animatedEls.forEach((el) => observer.observe(el));
+      animated.forEach((el) => observer.observe(el));
     </script>
   </body>
 </html>
