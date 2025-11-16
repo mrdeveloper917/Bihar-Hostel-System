@@ -41,9 +41,10 @@
             class="btn btn-light btn-sm px-3 fw-semibold shadow-sm hover-raise"
             href="/login"
           >
-            <i class="bi bi-box-arrow-in-right me-1"></i> Login
+            <i class="bi bi-person-circle me-1"></i> Login
           </a>
         </li>
+
         <% } else { %>
         <li class="nav-item dropdown ms-lg-3">
           <a
@@ -83,13 +84,16 @@
             </li>
             <% } %>
             <li><hr class="dropdown-divider" /></li>
-            <li>
-              <form action="/logout" method="POST" class="m-0">
-                <button class="dropdown-item text-danger" type="submit">
-                  <i class="bi bi-box-arrow-right me-2"></i> Logout
-                </button>
-              </form>
-            </li>
+           <li>
+  <form action="/logout" method="POST" class="m-0">
+    <button class="dropdown-item text-danger fw-semibold" type="submit">
+      <i class="bi bi-person-circle me-2"></i>
+      <i class="bi bi-box-arrow-right me-2"></i>
+      Logout
+    </button>
+  </form>
+</li>
+
           </ul>
         </li>
         <% } %>
