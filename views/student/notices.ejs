@@ -1,95 +1,251 @@
 <% title = "Hostel Notices" %>
 
 <section class="container py-5 animate__animated animate__fadeIn">
+
+  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
     <div>
       <h2 class="fw-bold text-gradient mb-1">📢 Hostel Notices</h2>
-      <p class="text-muted small mb-0">Stay updated with the latest hostel announcements and circulars.</p>
+      <p class="text-muted small mb-0">
+        Stay updated with all hostel-related announcements and events.
+      </p>
     </div>
-    <div class="mt-3 mt-md-0">
+
+    <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
+
+      <input
+        type="text"
+        id="searchNotice"
+        class="form-control rounded-pill shadow-sm"
+        placeholder="🔍 Search notices..."
+        style="max-width: 250px"
+      />
+
       <button class="btn btn-gradient rounded-pill shadow-sm" onclick="location.reload()">
         <i class="bi bi-arrow-clockwise me-1"></i> Refresh
       </button>
+
+      <!-- ⭐ Add Leave Application Button -->
+      <button
+        class="btn btn-success rounded-pill shadow-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#leaveModal"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Add Leave Application
+      </button>
+
     </div>
   </div>
 
+  <!-- Notices Section -->
   <% if (notices.length === 0) { %>
   <div class="empty-state text-center py-5 glass-card shadow-sm">
     <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="130" class="mb-3" alt="No Notices" />
     <h5 class="fw-semibold mb-2 text-muted">No Notices Yet</h5>
-    <p class="text-secondary small">All updates will appear here once the warden posts them.</p>
+    <p class="text-secondary small">
+      All updates will appear here once posted by the warden.
+    </p>
   </div>
   <% } else { %>
-  <div class="row g-4">
+
+  <div class="row g-4" id="noticeContainer">
     <% notices.forEach(n => { %>
-    <div class="col-md-6 col-lg-4">
-      <div class="card notice-card shadow-sm glass-card border-0 p-3 h-100">
+    <div class="col-md-6 col-lg-4 notice-item" data-title="<%= n.title.toLowerCase() %>">
+      <div class="card notice-card glass-card shadow-lg border-0 p-4 h-100">
+
         <div class="d-flex justify-content-between align-items-start mb-2">
-          <h5 class="fw-semibold text-gradient"><i class="bi bi-megaphone me-2"></i><%= n.title %></h5>
+          <h5 class="fw-semibold text-gradient">
+            <i class="bi bi-megaphone-fill me-2"></i><%= n.title %>
+          </h5>
           <span class="badge bg-gradient-info text-white">
             <%= new Date(n.createdAt).toLocaleDateString() %>
           </span>
         </div>
-        <p class="text-muted small"><%= n.content.substring(0, 150) %>...</p>
-        <% if (n.attachment) { %>
-          <a href="<%= n.attachment %>" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill mt-2">
-            <i class="bi bi-paperclip me-1"></i> View Attachment
-          </a>
+
+        <% if (n.category) { %>
+        <span class="badge category-badge <%= n.category.toLowerCase() %> mb-3">
+          <i class="bi bi-tag"></i> <%= n.category %>
+        </span>
         <% } %>
+
+        <p class="text-muted small mb-3">
+          <%= (n.content && typeof n.content === "string") ?
+          n.content.substring(0, 200) + "..." :
+          "No description available." %>
+        </p>
+
+        <% if (n.attachment) { %>
+        <a
+          href="<%= n.attachment %>"
+          target="_blank"
+          class="btn btn-outline-primary btn-sm rounded-pill px-3 mt-auto"
+        >
+          <i class="bi bi-paperclip me-1"></i> View Attachment
+        </a>
+        <% } %>
+
       </div>
     </div>
     <% }) %>
   </div>
+
   <% } %>
+
 </section>
 
-<!-- 🎨 Styles -->
+<!-----------------------------  
+ 🌿 LEAVE APPLICATION MODAL 
+------------------------------->
+<div
+  class="modal fade"
+  id="leaveModal"
+  tabindex="-1"
+  aria-labelledby="leaveModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-card p-3">
+
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold text-gradient" id="leaveModalLabel">
+          📝 New Leave Application
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form action="/student/leaves" method="POST">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Leave Reason</label>
+            <textarea
+              name="reason"
+              class="form-control rounded-pill"
+              placeholder="Reason for leave..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              class="form-control rounded-pill"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              class="form-control rounded-pill"
+              required
+            />
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-success rounded-pill px-4">
+            Submit
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-----------------------------  
+ 🎨  STYLES 
+------------------------------->
 <style>
-body {
-  background: linear-gradient(135deg, #f7faff, #eef3f8);
-  font-family: "Poppins", sans-serif;
-}
-.text-gradient {
-  background: linear-gradient(90deg, #007bff, #6610f2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.btn-gradient {
-  background: linear-gradient(90deg, #007bff, #00bfff);
-  color: white;
-  border: none;
-  transition: 0.3s ease;
-}
-.btn-gradient:hover {
-  background: linear-gradient(90deg, #0069d9, #0099cc);
-  transform: translateY(-2px);
-}
-.glass-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  transition: all 0.3s ease;
-}
-.glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-.notice-card {
-  animation: fadeInUp 0.6s ease;
-}
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.badge.bg-gradient-info {
-  background: linear-gradient(90deg, #17a2b8, #00c3ff);
-}
-.empty-state img {
-  opacity: 0.9;
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+  body {
+    background: linear-gradient(135deg, #f0f5ff, #e6ecff);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .text-gradient {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: #fff;
+    border: none;
+  }
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: 0.3s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+
+  .notice-card {
+    position: relative;
+    animation: fadeInUp 0.7s ease both;
+  }
+
+  .category-badge {
+    font-size: 0.75rem;
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
+
+  .category-badge.important {
+    background: linear-gradient(90deg, #ff4b2b, #ff416c);
+    color: white;
+  }
+  .category-badge.event {
+    background: linear-gradient(90deg, #00b09b, #96c93d);
+    color: white;
+  }
+  .category-badge.general {
+    background: linear-gradient(90deg, #007bff, #00bfff);
+    color: white;
+  }
+
+  .modal-content {
+    border-radius: 20px !important;
+  }
+
+  textarea.form-control {
+    height: 90px;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 </style>
+
+<!-----------------------------  
+ 🔍 SEARCH SCRIPT 
+------------------------------->
+<script>
+  document.getElementById("searchNotice")?.addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    document.querySelectorAll(".notice-item").forEach((item) => {
+      const title = item.getAttribute("data-title");
+      item.style.display = title.includes(query) ? "block" : "none";
+    });
+  });
+</script>

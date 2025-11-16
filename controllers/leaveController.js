@@ -1,88 +1,77 @@
 import Leave from "../models/leave.js";
 import Student from "../models/student.js";
-import Notice from "../models/noticeModel.js";
-import { sendEmail } from "../utils/mailer.js";
 
-// 📄 GET LEAVES PAGE
 export const getLeaves = async (req, res) => {
   try {
     const student = await Student.findOne({ user: req.session.user._id });
-    if (!student) return res.redirect("/login");
-
-    const leaves = await Leave.find({ student: student._id })
-      .sort({ createdAt: -1 })
-      .lean();
-
-    const notices = await Notice.find().sort({ createdAt: -1 }).limit(5).lean();
+    const leaves = await Leave.find({ student: student._id }).sort({
+      createdAt: -1,
+    });
 
     res.render("student/leaves", {
-      title: "My Leave Requests",
+      title: "Hostel Leave",
       user: req.session.user,
-      student,
-      leaves: leaves || [],
-      notices: notices || [],
+      leaves,
+      success: null,
+      error: null,
     });
-  } catch (error) {
-    console.error("❌ Error loading leaves:", error);
-    res.status(500).render("pages/error500", { title: "Server Error", error });
+  } catch (err) {
+    console.log("Leave Page Error:", err);
+    res.render("student/leaves", {
+      title: "Hostel Leave",
+      user: req.session.user,
+      leaves: [],
+      success: null,
+      error: "Failed to load leave applications.",
+    });
   }
 };
 
-// 🆕 APPLY FOR LEAVE
 export const applyLeave = async (req, res) => {
   try {
-    const { reason, fromDate, toDate } = req.body;
     const student = await Student.findOne({ user: req.session.user._id });
+
+    const { reason, fromDate, toDate } = req.body;
+
+    if (!reason || !fromDate || !toDate) {
+      return res.render("student/leaves", {
+        title: "Hostel Leave",
+        user: req.session.user,
+        leaves: await Leave.find({ student: student._id }).sort({
+          createdAt: -1,
+        }),
+        success: null,
+        error: "All fields are required.",
+      });
+    }
 
     await Leave.create({
       student: student._id,
-      studentName: req.session.user.name,
       reason,
       fromDate,
       toDate,
-      status: "pending",
+      status: "Pending",
+      createdAt: new Date(),
     });
 
-    req.flash("success", "Leave request submitted successfully!");
-    res.redirect("/student/leaves");
-  } catch (error) {
-    console.error("❌ Error applying for leave:", error);
-    res.status(500).render("pages/error500", { title: "Server Error", error });
+    res.render("student/leaves", {
+      title: "Hostel Leave",
+      user: req.session.user,
+      leaves: await Leave.find({ student: student._id }).sort({
+        createdAt: -1,
+      }),
+      success: "Leave applied successfully!",
+      error: null,
+    });
+  } catch (err) {
+    console.log("Apply Leave Error:", err);
+
+    res.render("student/leaves", {
+      title: "Hostel Leave",
+      user: req.session.user,
+      leaves: [],
+      success: null,
+      error: "Error applying for leave.",
+    });
   }
-};
-
-// ❌ CANCEL LEAVE
-export const cancelLeave = async (req, res) => {
-  try {
-    const leave = await Leave.findById(req.params.id);
-    if (!leave) return res.status(404).json({ error: "Leave not found" });
-
-    if (leave.status !== "pending")
-      return res
-        .status(400)
-        .json({ error: "Only pending leaves can be canceled" });
-
-    await Leave.findByIdAndDelete(req.params.id);
-    req.flash("success", "Leave request canceled!");
-    res.redirect("/student/leaves");
-  } catch (error) {
-    console.error("❌ Error canceling leave:", error);
-    res.status(500).render("pages/error500", { title: "Server Error", error });
-  }
-};
-
-
-export const approveLeave = async (req, res) => {
-  const leave = await Leave.findById(req.params.id).populate("student");
-  leave.status = "Approved";
-  await leave.save();
-
-  await sendEmail(
-    leave.student.user.email,
-    "Your Leave Request Approved",
-    `<p>Dear ${leave.student.user.name}, your leave request has been approved.</p>`
-  );
-
-  req.flash("success", "Leave approved and email sent!");
-  res.redirect("/admin/leaves");
 };
