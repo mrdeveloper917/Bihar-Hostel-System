@@ -9,75 +9,60 @@ import Visitor from "../models/visitor.js";
 import Leave from "../models/leave.js";
 import Maintenance from "../models/maintenance.js";
 
-
-
 /* ===========================================================
    🏠 STUDENT DASHBOARD
 =========================================================== */
 export const getStudentDashboard = async (req, res) => {
   try {
-    // Get logged-in student
     const student = await Student.findOne({
       user: req.session.user._id,
-    }).lean();
+    }).populate("user");
 
-    // If no student found, redirect gracefully
-    if (!student) {
-      req.flash("error", "Student profile not found!");
-      return res.redirect("/login");
-    }
+    const maintenance = await Maintenance.find({ student: student._id })
+      .sort({ createdAt: -1 });
 
-    // Use try-catch per section to avoid total crash
-    let maintenance = [];
-    let visitors = [];
-    let notices = [];
+    const visitors = await Visitor.find({ student: student._id })
+      .sort({ createdAt: -1 });
 
-    try {
-      maintenance = await Maintenance.find({ student: student._id })
-        .sort({ createdAt: -1 })
-        .lean();
-    } catch (err) {
-      console.warn("⚠️ Maintenance fetch failed:", err.message);
-    }
-
-    try {
-      visitors = await Visitor.find({ student: student._id })
-        .sort({ createdAt: -1 })
-        .lean();
-    } catch (err) {
-      console.warn("⚠️ Visitor fetch failed:", err.message);
-    }
-
-    try {
-      notices = await Notice.find().sort({ createdAt: -1 }).limit(5).lean();
-    } catch (err) {
-      console.warn("⚠️ Notice fetch failed:", err.message);
-    }
+    const notices = await Notice.find().sort({ createdAt: -1 }).limit(5);
 
     const leaves = await Leave.find({ student: student._id })
-      .sort({ createdAt: -1 })
-      .lean();
+      .sort({ createdAt: -1 });
 
-    // Render dashboard safely
     res.render("dashboard/student_dashboard", {
       title: "Student Dashboard",
       user: req.session.user,
       student,
-      maintenance: maintenance || [], // ✅ always defined
-      visitors: visitors || [], // ✅ always defined
-      notices: notices || [], // ✅ always defined
+      maintenance,
+      visitors,
+      notices,
       complaintsPending: 0,
       approvedLeaves: 0,
-      leaves: leaves || [],
+      leaves,
     });
-  } catch (error) {
-    console.error("❌ Error loading student dashboard:", error);
-    res.status(500).render("pages/error500", {
-      title: "Server Error",
-      error,
-    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).render("pages/error500");
   }
 };
+
+
+export const getPaymentHistory = async (req, res) => {
+  try {
+    const student = await Student.findOne({ user: req.session.user._id });
+
+    res.render("pages/payment_history", {
+      title: "Payment History",
+      user: req.session.user,
+      payments: student.payments.reverse(), // latest first
+    });
+  } catch (err) {
+    console.error("History Error:", err);
+    res.status(500).render("pages/error500", { title: "Server Error" });
+  }
+};
+
 
 /* ===========================================================
    👤 STUDENT PROFILE
@@ -194,7 +179,9 @@ export const postComplaint = async (req, res) => {
 =========================================================== */
 export const getStudentVisitors = async (req, res) => {
   try {
-    const student = await Student.findOne({ user: req.session.user._id }).lean();
+    const student = await Student.findOne({
+      user: req.session.user._id,
+    }).lean();
     if (!student) {
       req.flash("error", "Student profile not found!");
       return res.redirect("/login");
@@ -392,10 +379,11 @@ export const getFeePayment = async (req, res) => {
 export const createOrder = async (req, res) => {
   try {
     const options = {
-      amount: 5000 * 100, // ₹5000
+      amount: 5000 * 100,
       currency: "INR",
       receipt: "rcpt_" + Date.now(),
     };
+
     const order = await razorpay.orders.create(options);
     res.status(200).json(order);
   } catch (error) {
@@ -404,12 +392,15 @@ export const createOrder = async (req, res) => {
   }
 };
 
-// ✅ Verify Razorpay Payment
 export const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    } = req.body;
 
+    // verify signature
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
@@ -417,31 +408,42 @@ export const verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (expectedSignature !== razorpay_signature) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid signature" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid signature",
+      });
     }
 
     const student = await Student.findOne({ user: req.session.user._id });
-    if (!student)
-      return res
-        .status(404)
-        .json({ success: false, message: "Student not found" });
 
+    if (!student)
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+
+    // payment entry
     const payment = {
       paymentId: razorpay_payment_id,
       amount: 5000,
-      status: "Paid",
+      method: "Razorpay",
+      status: "Success",
       date: new Date(),
     };
 
+    // fee update
     student.totalFeesPaid = (student.totalFeesPaid || 0) + 5000;
     student.feeStatus = "Paid";
     student.lastPaymentDate = new Date();
-    student.payments = [...(student.payments || []), payment];
+    student.payments.push(payment);
+
     await student.save();
 
-    res.json({ success: true, message: "Payment verified successfully!" });
+    res.json({
+      success: true,
+      message: "Payment verified successfully!",
+    });
+
   } catch (error) {
     console.error("❌ Error verifying payment:", error);
     res.status(500).json({ success: false });

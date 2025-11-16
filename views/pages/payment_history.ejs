@@ -1,0 +1,43 @@
+<% title = "Payment History" %>
+
+<section class="container my-5">
+  <h2 class="text-center text-primary mb-4">💳 Payment History</h2>
+
+  <div class="card shadow-lg p-4">
+    <% if (payments.length === 0) { %>
+    <p class="text-center text-muted">No payments yet.</p>
+    <% } else { %>
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Payment ID</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Receipt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% payments.forEach(p => { %>
+        <tr>
+          <td><%= p.paymentId %></td>
+          <td>₹<%= p.amount %></td>
+          <td>
+            <span class="badge bg-success">Paid</span>
+          </td>
+          <td><%= new Date(p.date).toLocaleDateString() %></td>
+          <td>
+            <a
+              href="/payment/receipt/<%= p.paymentId %>"
+              class="btn btn-outline-primary btn-sm"
+            >
+              Download
+            </a>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } %>
+  </div>
+</section>
